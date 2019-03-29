@@ -36,10 +36,10 @@ public class VerticalTextView extends AppCompatTextView {
 
         if(topDown){
             canvas.translate(getWidth(), 0);
-            canvas.rotate(90);
+            canvas.rotate(-90);
         }else {
             canvas.translate(0, getHeight());
-            canvas.rotate(-90);
+            canvas.rotate(90);
         }
 
 
