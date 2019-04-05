@@ -3,13 +3,19 @@ package com.gmail.slashb410.picshelf
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.widget.ListView
 import android.widget.RemoteViews
 import com.gmail.slashb410.picshelf.R
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.pic_shelf_app_widget.view.*
+import com.gmail.slashb410.picshelf.Activity.MainActivity
+import android.app.PendingIntent
+import android.content.ComponentName
+
 
 /**
  * Implementation of App Widget functionality.
@@ -24,6 +30,14 @@ class PicShelfAppWidget : AppWidgetProvider() {
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
+    }
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        super.onReceive(context, intent)
+
+        var manager = AppWidgetManager.getInstance(context)
+        initUI(context, manager, manager.getAppWidgetIds(object : ComponentName(context, getclass)))
+
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
@@ -48,28 +62,29 @@ class PicShelfAppWidget : AppWidgetProvider() {
             appWidgetId: Int
         ) {
 
-            val widgetText = PicShelfAppWidgetConfigureActivity.loadTitlePref(context, appWidgetId)
+//            val widgetText = PicShelfAppWidgetConfigureActivity.loadTitlePref(context, appWidgetId)
             // Construct the RemoteViews object
             val views = RemoteViews(context.packageName, R.layout.pic_shelf_app_widget)
-            views.setTextViewText(R.id.appwidget_text, widgetText)
 
-            var list = loadData()
-            var adapter : ListAdapter = ListAdapter(list)
-
-            var mLayoutManager = LinearLayoutManager(this)
-            views.getlaylayoutManager = mLayoutManager
-            views.setRemoteAdapter(R.id.lv_widget, adapter)
-
-
+            var intent = Intent(context, ListViewWidgetService::class.java)
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            intent.data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
+            views.setRemoteAdapter(appWidgetId, R.id.lv_widget, intent)
+
+            val startActivityIntent = Intent(context, MainActivity::class.java)
+            val startActivityPendingIntent =
+                PendingIntent.getActivity(context, 0, startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            views.setPendingIntentTemplate(R.id.lv_widget, startActivityPendingIntent)
+//            views.setEmptyView(R.id.lv_widget, R.i)
         }
     }
 
 
-    private fun loadData(): ArrayList<ListItem> {
+    private fun loadData(context: Context): ArrayList<ListItem> {
 
-        val helper = SQLiteHelper(this)
+        val helper = SQLiteHelper(context)
         val db = helper.writableDatabase
 
 //        var db = this.openOrCreateDatabase("picshelf", Context.MODE_PRIVATE, null)
