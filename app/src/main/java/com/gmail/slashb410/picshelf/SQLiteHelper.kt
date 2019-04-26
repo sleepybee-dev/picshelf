@@ -3,8 +3,6 @@ package com.gmail.slashb410.picshelf
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.Parcel
-import android.os.Parcelable
 
 class SQLiteHelper(context : Context) : SQLiteOpenHelper(context, "picshelfdb", null, 1) {
 
@@ -22,5 +20,7 @@ class SQLiteHelper(context : Context) : SQLiteOpenHelper(context, "picshelfdb", 
         db!!.execSQL("DROP TABLE IF EXISTS PICS_TB")
         onCreate(db)
     }
+
+
 
 }

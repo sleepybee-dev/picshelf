@@ -19,7 +19,8 @@ import com.gmail.slashb410.picshelf.SQLiteHelper
 
 class EditActivity : AppCompatActivity() {
 
-    var item : ListItem? = null
+    var resultItem : ListItem? = null
+    var idx : Int = 0
     lateinit var uri : Uri
     lateinit var originUri : Uri
     var label : String = ""
@@ -28,9 +29,16 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
+
+        idx = intent.extras.get("idx") as Int
         uri = intent.extras.get("uri") as Uri
         originUri = intent.extras.get("originUri") as Uri
+        label = intent.extras.get("label") as String
+        color = intent.extras.get("color") as String
+
         Log.i("SB", "originUri : $originUri")
+
+        et_label_edit.setText(label)
 
         val mgr = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -40,7 +48,6 @@ class EditActivity : AppCompatActivity() {
 
             mgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         })
-
 
         et_label_edit.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
@@ -70,11 +77,21 @@ class EditActivity : AppCompatActivity() {
 
         Snackbar.make(view, "SAVE", Snackbar.LENGTH_SHORT).show()
         var intent = Intent()
-        item = ListItem(originUri, uri, "red", et_label_edit.text.toString())
+        resultItem = ListItem(idx, originUri, uri, "red", et_label_edit.text.toString())
 //        intent.putExtra("item", item!!)
         val helper = SQLiteHelper(this)
         val db = helper.writableDatabase
-        db.execSQL("INSERT INTO PICS_TB (originUri, uri, label, color) VALUES ('$originUri', '$uri', '$label', '$color');")
+        db.execSQL("INSERT OR REPLACE INTO PICS_TB" +
+                " (originUri, uri, label, color)" +
+                " VALUES ('$originUri', '$uri', '$label', '$color')" +
+                " UPDATE PICS_TB" +
+                " SET (originUri='$originUri', uri label color WHERE idx=$idx);")
+//        if(idx!=0) {
+            db.execSQL("INSERT INTO PICS_TB (originUri, uri, label, color) VALUES ('$originUri', '$uri', '$label', '$color') WHERE NOT EXISTS (SELECT * FROM PICS_TB WHERE idx=$idx);")
+        db.execSQL("UPDATE PICS_TB SET (originUri, uri, label, color) VALUES ('$originUri', '$uri', '$label', '$color') WHERE NOT EXISTS (SELECT * FROM PICS_TB WHERE idx=$idx);")
+//        }else{
+//            db.execSQL("INSERT INTO PICS_TB (originUri, uri, label, color) VALUES ('$originUri', '$uri', '$label', '$color')")
+//        }
 
         setResult(MainActivity.RESULT_EDIT, intent)
         finish()

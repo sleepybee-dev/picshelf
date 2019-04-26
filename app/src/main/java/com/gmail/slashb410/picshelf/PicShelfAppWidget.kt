@@ -5,16 +5,9 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.widget.LinearLayoutManager
-import android.view.View
-import android.widget.ListView
 import android.widget.RemoteViews
-import com.gmail.slashb410.picshelf.R
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.pic_shelf_app_widget.view.*
 import com.gmail.slashb410.picshelf.Activity.MainActivity
 import android.app.PendingIntent
-import android.content.ComponentName
 
 
 /**
@@ -36,7 +29,7 @@ class PicShelfAppWidget : AppWidgetProvider() {
         super.onReceive(context, intent)
 
         var manager = AppWidgetManager.getInstance(context)
-        initUI(context, manager, manager.getAppWidgetIds(object : ComponentName(context, getclass)))
+//        initUI(context, manager, manager.getAppWidgetIds(object : ComponentName(context, getclass)))
 
     }
 
@@ -96,12 +89,13 @@ class PicShelfAppWidget : AppWidgetProvider() {
         if(cursor!=null){
             if(cursor.moveToFirst()){
                 do{
+                    var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
                     var label = cursor.getString(cursor.getColumnIndex("label"))
                     var color = cursor.getString(cursor.getColumnIndex("color"))
                     var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
                     var uri = cursor.getString(cursor.getColumnIndex("uri"))
 
-                    var item = ListItem(Uri.parse(originUri), Uri.parse(uri), label, color)
+                    var item = ListItem(idx, Uri.parse(originUri), Uri.parse(uri), label, color)
                     items.add(item)
 
                 } while (cursor.moveToNext())

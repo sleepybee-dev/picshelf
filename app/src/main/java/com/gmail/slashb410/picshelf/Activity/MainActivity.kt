@@ -25,6 +25,7 @@ import com.yalantis.ucrop.UCrop
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.pic_shelf_app_widget.view.*
 import java.io.File
 
 
@@ -75,8 +76,6 @@ class MainActivity : AppCompatActivity() {
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .check()
         }
-
-
     }
 
     private fun initList() {
@@ -105,12 +104,13 @@ class MainActivity : AppCompatActivity() {
         if(cursor!=null){
             if(cursor.moveToFirst()){
                 do{
+                    var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
                     var label = cursor.getString(cursor.getColumnIndex("label"))
                     var color = cursor.getString(cursor.getColumnIndex("color"))
                     var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
                     var uri = cursor.getString(cursor.getColumnIndex("uri"))
 
-                    var item = ListItem(Uri.parse(originUri), Uri.parse(uri), label, color)
+                    var item = ListItem(idx, Uri.parse(originUri), Uri.parse(uri), label, color)
                     items.add(item)
 
                 } while (cursor.moveToNext())
@@ -124,6 +124,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var originUri : Uri? = null
+    private var label : String = ""
+    private var color : String = ""
+    private var idx : Int = 0
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -148,7 +151,7 @@ class MainActivity : AppCompatActivity() {
                             option.setCompressionFormat(Bitmap.CompressFormat.JPEG)
 
                             UCrop.of(data.data!!, Uri.fromFile(File(destUri, srcName)))
-                        .withAspectRatio(5.0F, 3.0F)
+                                .withAspectRatio(5.0F, 3.0F)
                                 .withOptions(option)
                                 .start(this)
 
@@ -158,15 +161,15 @@ class MainActivity : AppCompatActivity() {
                     UCrop.REQUEST_CROP -> {
 
                         var intent = Intent(this, EditActivity::class.java)
-                        intent.putExtra("uri", UCrop.getOutput(data!!))
+                        intent.putExtra("idx", idx)
                         intent.putExtra("originUri", originUri)
+                        intent.putExtra("uri", UCrop.getOutput(data!!))
+                        intent.putExtra("label", label)
+                        intent.putExtra("color", color)
                         startActivityForResult(intent, 200)
                         Log.i("SB", "CROP DATA : " + UCrop.getOutput(data!!))
                     }
-
-
                 }
-
             }
 
             UCrop.RESULT_ERROR -> {

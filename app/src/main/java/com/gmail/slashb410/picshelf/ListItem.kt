@@ -5,32 +5,40 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ListItem(
+    var idx : Int,
     var originUri: Uri,
     var uri: Uri,
     var label: String,
     var color: String
 ) : Parcelable {
-    constructor(source: Parcel) : this(
-        source.readParcelable<Uri>(Uri::class.java.classLoader),
-        source.readParcelable<Uri>(Uri::class.java.classLoader),
-        source.readString(),
-        source.readString()
-    )
-
-    override fun describeContents() = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeParcelable(originUri, 0)
-        writeParcelable(uri, 0)
-        writeString(label)
-        writeString(color)
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readParcelable(Uri::class.java.classLoader),
+        parcel.readParcelable(Uri::class.java.classLoader),
+        parcel.readString(),
+        parcel.readString()
+    ) {
     }
 
-    companion object {
-        @JvmField
-        val CREATOR: Parcelable.Creator<ListItem> = object : Parcelable.Creator<ListItem> {
-            override fun createFromParcel(source: Parcel): ListItem = ListItem(source)
-            override fun newArray(size: Int): Array<ListItem?> = arrayOfNulls(size)
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(idx)
+        parcel.writeParcelable(originUri, flags)
+        parcel.writeParcelable(uri, flags)
+        parcel.writeString(label)
+        parcel.writeString(color)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<ListItem> {
+        override fun createFromParcel(parcel: Parcel): ListItem {
+            return ListItem(parcel)
+        }
+
+        override fun newArray(size: Int): Array<ListItem?> {
+            return arrayOfNulls(size)
         }
     }
 }
