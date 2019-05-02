@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         //화면비율가져오기
+        getItemSize()
 
         initList()
 
@@ -76,6 +77,10 @@ class MainActivity : AppCompatActivity() {
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .check()
         }
+    }
+
+    private fun getItemSize() {
+
     }
 
     private fun initList() {

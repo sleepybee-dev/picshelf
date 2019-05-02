@@ -12,4 +12,7 @@ object GlobalUtils {
         db.execSQL("DELETE FROM PICS_TB WHERE originUri='$originUri'")
 
     }
+
+    var ITEM_WIDTH : Int = 0
+    var ITEM_HEIGHT : Int = 0
 }

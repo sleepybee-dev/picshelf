@@ -81,17 +81,17 @@ class EditActivity : AppCompatActivity() {
 //        intent.putExtra("item", item!!)
         val helper = SQLiteHelper(this)
         val db = helper.writableDatabase
-        db.execSQL("INSERT OR REPLACE INTO PICS_TB" +
-                " (originUri, uri, label, color)" +
-                " VALUES ('$originUri', '$uri', '$label', '$color')" +
-                " UPDATE PICS_TB" +
-                " SET (originUri='$originUri', uri label color WHERE idx=$idx);")
-//        if(idx!=0) {
-            db.execSQL("INSERT INTO PICS_TB (originUri, uri, label, color) VALUES ('$originUri', '$uri', '$label', '$color') WHERE NOT EXISTS (SELECT * FROM PICS_TB WHERE idx=$idx);")
-        db.execSQL("UPDATE PICS_TB SET (originUri, uri, label, color) VALUES ('$originUri', '$uri', '$label', '$color') WHERE NOT EXISTS (SELECT * FROM PICS_TB WHERE idx=$idx);")
-//        }else{
-//            db.execSQL("INSERT INTO PICS_TB (originUri, uri, label, color) VALUES ('$originUri', '$uri', '$label', '$color')")
-//        }
+
+        if(idx==0){
+            db.execSQL("INSERT INTO PICS_TB" +
+                    " (originUri, uri, label, color)" +
+                    " VALUES ('$originUri', '$uri', '$label', '$color')")
+        }else{
+            db.execSQL("INSERT OR REPLACE INTO PICS_TB" +
+                    " (idx, originUri, uri, label, color)" +
+                    " VALUES ('$idx', '$originUri', '$uri', '$label', '$color')")
+
+        }
 
         setResult(MainActivity.RESULT_EDIT, intent)
         finish()
