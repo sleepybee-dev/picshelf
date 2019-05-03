@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-        android:layout_margin="8dp"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/bgGray"
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button android:layout_width="20dp"
-                android:layout_height="20dp"/>
-        <com.gmail.slashb410.picshelf.VerticalTextView
-                android:background="@drawable/box_left_round_red"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/tv_label_item"
-                android:text="LABEL"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_item"
-                app:layout_constraintRight_toLeftOf="@+id/iv_item"/>
+    <FrameLayout
+            app:layout_constraintLeft_toRightOf="@+id/iv_item"
+            app:layout_constraintTop_toTopOf="@id/iv_item"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@color/btnWhite"
+            android:id="@+id/color_item"
+            android:layout_width="30dp"
+            android:layout_height="10dp"/>
 
+    <com.gmail.slashb410.picshelf.VerticalTextView
+            android:background="@color/btnWhite"
+            android:layout_width="30dp" android:layout_height="70dp"
+            android:id="@+id/tv_label_item"
+            android:text="LABEL"
+            app:layout_constraintTop_toBottomOf="@+id/color_item"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/iv_item"/>
 
     <ImageView
             android:background="#ffffff"
-            android:id="@+id/iv_item" android:layout_width="match_parent"
+            android:id="@+id/iv_item" android:layout_width="0dp"
             android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_label_item"
             app:layout_constraintLeft_toRightOf="@+id/tv_label_item"
