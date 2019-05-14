@@ -4,6 +4,13 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="bgGray">#aaaaaa</color>
+    <color name="bgGray">#eeeeee</color>
     <color name="btnWhite">#ffffff</color>
+
+    <color name="defaultGray">#aaaaaa</color>
+
+    <color name="indexRed">#ff5555</color>
+    <color name="indexYellow">#ffff55</color>
+    <color name="indexBlue">#55aaff</color>
+    <color name="indexPurple">#aa00ff</color>
 </resources>

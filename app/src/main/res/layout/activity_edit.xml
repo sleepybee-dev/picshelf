@@ -4,14 +4,15 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp">
+        android:layout_height="match_parent">
 
     <FrameLayout
-            app:layout_constraintLeft_toRightOf="@+id/iv_edit"
+            android:layout_marginTop="8dp"
+            app:layout_constraintRight_toLeftOf="@+id/iv_edit"
             app:layout_constraintTop_toTopOf="@id/iv_edit"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:background="@color/btnWhite"
+            app:layout_constraintBottom_toTopOf="@+id/tv_label_edit"
+            android:background="@color/defaultGray"
             android:id="@+id/color_edit"
             android:layout_width="30dp"
             android:layout_height="10dp"/>
@@ -35,6 +36,8 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
     <RadioGroup
+            android:layout_marginTop="20dp"
+            android:background="@drawable/box_round_white"
             android:id="@+id/rg_label_color_edit"
             android:gravity="center"
             android:orientation="horizontal"
@@ -64,6 +67,7 @@
     </RadioGroup>
 
     <EditText
+            android:padding="16dp"
             android:background="@drawable/box_round_white"
             android:id="@+id/et_label_edit"
             android:layout_margin="16dp"
