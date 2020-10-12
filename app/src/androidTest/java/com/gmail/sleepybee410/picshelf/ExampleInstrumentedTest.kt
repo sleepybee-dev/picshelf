@@ -1,4 +1,4 @@
-package com.gmail.slashb410.picshelf
+package com.gmail.sleepybee410.picshelf
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

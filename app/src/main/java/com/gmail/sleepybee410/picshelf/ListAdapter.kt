@@ -1,13 +1,10 @@
-package com.gmail.slashb410.picshelf
+package com.gmail.sleepybee410.picshelf
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +12,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.gmail.slashb410.picshelf.Activity.EditActivity
-import com.gmail.slashb410.picshelf.Activity.MainActivity
-import com.yalantis.ucrop.UCrop
-import kotlinx.android.synthetic.main.item_list.view.*
+import com.gmail.sleepybee410.picshelf.Activity.EditActivity
+import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 
 class ListAdapter (list : ArrayList<ListItem>) : RecyclerView.Adapter<ListAdapter.ViewHolder>(), View.OnClickListener {
 

@@ -1,13 +1,14 @@
-package com.gmail.slashb410.picshelf
+package com.gmail.sleepybee410.picshelf
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Environment
 import android.widget.RemoteViews
-import com.gmail.slashb410.picshelf.Activity.MainActivity
-import android.app.PendingIntent
+import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 
 
 /**
@@ -18,7 +19,11 @@ class PicShelfAppWidget : AppWidgetProvider() {
 
     var context : Context? = null
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
@@ -64,48 +69,60 @@ class PicShelfAppWidget : AppWidgetProvider() {
             intent.data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
-            views.setRemoteAdapter(appWidgetId, R.id.lv_widget, intent)
+//            views.setRemoteAdapter(appWidgetId, R.id.lv_widget, intent)
 
             val startActivityIntent = Intent(context, MainActivity::class.java)
             val startActivityPendingIntent =
-                PendingIntent.getActivity(context, 0, startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-            views.setPendingIntentTemplate(R.id.lv_widget, startActivityPendingIntent)
+                PendingIntent.getActivity(
+                    context,
+                    0,
+                    startActivityIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            val dbList = loadData(context);
+//            val uri = Uri.parse(
+//                dbList.last().originUri
+//            )
+            print("dblist : "+dbList.size);
+            views.setImageViewUri(R.id.iv_widget, dbList.last().originUri);
+//            views.setPendingIntentTemplate(R.id.lv_widget, startActivityPendingIntent)
 //            views.setEmptyView(R.id.lv_widget, R.i)
         }
-    }
 
 
-    private fun loadData(context: Context): ArrayList<ListItem> {
+        fun loadData(context: Context): ArrayList<ListItem> {
 
-        val helper = SQLiteHelper(context)
-        val db = helper.writableDatabase
+            val helper = SQLiteHelper(context)
+            val db = helper.writableDatabase
 
 //        var db = this.openOrCreateDatabase("picshelf", Context.MODE_PRIVATE, null)
 //        db.execSQL("CREATE TABLE IF NOT EXISTS PICS_TB;")
 
-        var cursor = db.rawQuery("SELECT * FROM PICS_TB", null)
-        var items : ArrayList<ListItem> = ArrayList()
+            var cursor = db.rawQuery("SELECT * FROM PICS_TB", null)
+            var items : ArrayList<ListItem> = ArrayList()
 
-        if(cursor!=null){
-            if(cursor.moveToFirst()){
-                do{
-                    var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
-                    var label = cursor.getString(cursor.getColumnIndex("label"))
-                    var color = cursor.getString(cursor.getColumnIndex("color"))
-                    var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
-                    var uri = cursor.getString(cursor.getColumnIndex("uri"))
+            if(cursor!=null){
+                if(cursor.moveToFirst()){
+                    do{
+                        var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
+                        var label = cursor.getString(cursor.getColumnIndex("label"))
+                        var color = cursor.getString(cursor.getColumnIndex("color"))
+                        var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
+                        var uri = cursor.getString(cursor.getColumnIndex("uri"))
 
-                    var item = ListItem(idx, Uri.parse(originUri), Uri.parse(uri), label, color)
-                    items.add(item)
+                        var item = ListItem(idx, Uri.parse(originUri), Uri.parse(uri), label, color)
+                        items.add(item)
 
-                } while (cursor.moveToNext())
+                    } while (cursor.moveToNext())
+                }
             }
+
+            db.close()
+
+            return items
+
         }
-
-        db.close()
-
-        return items
-
     }
+
 }
 

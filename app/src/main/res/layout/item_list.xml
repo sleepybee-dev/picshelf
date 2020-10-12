@@ -16,7 +16,7 @@
             android:layout_width="30dp"
             android:layout_height="10dp"/>
 
-    <com.gmail.slashb410.picshelf.VerticalTextView
+    <com.gmail.sleepybee410.picshelf.VerticalTextView
             android:background="@color/btnWhite"
             android:layout_width="30dp" android:layout_height="70dp"
             android:id="@+id/tv_label_item"

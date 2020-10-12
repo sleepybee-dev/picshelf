@@ -1,4 +1,4 @@
-package com.gmail.slashb410.picshelf
+package com.gmail.sleepybee410.picshelf
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

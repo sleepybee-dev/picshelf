@@ -1,4 +1,4 @@
-package com.gmail.slashb410.picshelf.Activity
+package com.gmail.sleepybee410.picshelf.Activity
 
 import android.content.Context
 import android.content.Intent
@@ -12,9 +12,9 @@ import android.support.design.widget.Snackbar
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.gmail.slashb410.picshelf.ListItem
-import com.gmail.slashb410.picshelf.R
-import com.gmail.slashb410.picshelf.SQLiteHelper
+import com.gmail.sleepybee410.picshelf.ListItem
+import com.gmail.sleepybee410.picshelf.R
+import com.gmail.sleepybee410.picshelf.SQLiteHelper
 
 
 class EditActivity : AppCompatActivity() {
@@ -60,6 +60,10 @@ class EditActivity : AppCompatActivity() {
             }
         })
 
+        btn_confirm_edit.setOnClickListener { view ->
+            saveCropPic(view);
+        }
+
 
         if (uri != null) {
             Log.i("SB", "EDIT uri : " + uri!!.toString())
@@ -77,7 +81,7 @@ class EditActivity : AppCompatActivity() {
 
         Snackbar.make(view, "SAVE", Snackbar.LENGTH_SHORT).show()
         var intent = Intent()
-        resultItem = ListItem(idx, originUri, uri, "red", et_label_edit.text.toString())
+        resultItem = ListItem(idx, originUri, uri, label, et_label_edit.text.toString())
 //        intent.putExtra("item", item!!)
         val helper = SQLiteHelper(this)
         val db = helper.writableDatabase

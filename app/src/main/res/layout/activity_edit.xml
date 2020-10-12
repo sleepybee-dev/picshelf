@@ -17,7 +17,7 @@
             android:layout_width="30dp"
             android:layout_height="10dp"/>
 
-    <com.gmail.slashb410.picshelf.VerticalTextView
+    <com.gmail.sleepybee410.picshelf.VerticalTextView
             android:background="@color/btnWhite"
             android:layout_width="30dp" android:layout_height="70dp"
             android:id="@+id/tv_label_edit"
@@ -74,5 +74,14 @@
             app:layout_constraintTop_toBottomOf="@+id/rg_label_color_edit"
             android:hint="INPUT PICTURE LABEL"
     />
+
+    <Button
+            android:background="@color/colorPrimary"
+            android:id="@+id/btn_confirm_edit"
+            app:layout_constraintTop_toBottomOf="@+id/et_label_edit"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="CONFIRM"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,10 +1,9 @@
-package com.gmail.slashb410.picshelf
+package com.gmail.sleepybee410.picshelf
 
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViewsService
 import android.widget.RemoteViews
-import android.text.method.TextKeyListener.clear
 import android.os.Bundle
 import android.util.Log
 

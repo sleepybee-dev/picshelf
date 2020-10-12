@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.gmail.slashb410.picshelf">
+          package="com.gmail.sleepybee410.picshelf">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -13,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".Activity.MainActivity"
+                android:name="com.gmail.sleepybee410.picshelf.Activity.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -28,10 +28,10 @@
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-                android:name=".Activity.EditActivity"
+                android:name="com.gmail.sleepybee410.picshelf.Activity.EditActivity"
                 android:label="EDIT"/>
 
-        <receiver android:name=".PicShelfAppWidget">
+        <receiver android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -41,13 +41,13 @@
                     android:resource="@xml/pic_shelf_app_widget_info"/>
         </receiver>
 
-        <activity android:name=".PicShelfAppWidgetConfigureActivity">
+        <activity android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidgetConfigureActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
 
-        <service android:name=".ListViewWidgetService"
+        <service android:name="com.gmail.sleepybee410.picshelf.ListViewWidgetService"
                  android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
     </application>

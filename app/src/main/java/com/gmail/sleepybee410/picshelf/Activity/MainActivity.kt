@@ -1,10 +1,8 @@
-package com.gmail.slashb410.picshelf.Activity
+package com.gmail.sleepybee410.picshelf.Activity
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -15,17 +13,16 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.gmail.slashb410.picshelf.ListAdapter
-import com.gmail.slashb410.picshelf.ListItem
-import com.gmail.slashb410.picshelf.R
-import com.gmail.slashb410.picshelf.SQLiteHelper
+import com.gmail.sleepybee410.picshelf.ListAdapter
+import com.gmail.sleepybee410.picshelf.ListItem
+import com.gmail.sleepybee410.picshelf.R
+import com.gmail.sleepybee410.picshelf.SQLiteHelper
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yalantis.ucrop.UCrop
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.pic_shelf_app_widget.view.*
 import java.io.File
 
 

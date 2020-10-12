@@ -1,4 +1,4 @@
-package com.gmail.slashb410.picshelf
+package com.gmail.sleepybee410.picshelf
 
 import android.net.Uri
 import android.os.Parcel
