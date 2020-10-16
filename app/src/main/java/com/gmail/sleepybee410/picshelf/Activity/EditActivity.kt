@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.gmail.sleepybee410.picshelf.ListItem
+import com.gmail.sleepybee410.picshelf.PicShelfAppWidgetConfigureActivity.Companion.RESULT_EDIT
 import com.gmail.sleepybee410.picshelf.R
 import com.gmail.sleepybee410.picshelf.SQLiteHelper
 
@@ -21,6 +22,7 @@ class EditActivity : AppCompatActivity() {
 
     var resultItem : ListItem? = null
     var idx : Int = 0
+    var widgetId : Int = 0
     lateinit var uri : Uri
     lateinit var originUri : Uri
     var label : String = ""
@@ -31,6 +33,7 @@ class EditActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit)
 
         idx = intent.extras.get("idx") as Int
+        widgetId = intent.extras.get("widgetId") as Int
         uri = intent.extras.get("uri") as Uri
         originUri = intent.extras.get("originUri") as Uri
         label = intent.extras.get("label") as String
@@ -88,16 +91,16 @@ class EditActivity : AppCompatActivity() {
 
         if(idx==0){
             db.execSQL("INSERT INTO PICS_TB" +
-                    " (originUri, uri, label, color)" +
-                    " VALUES ('$originUri', '$uri', '$label', '$color')")
+                    " (widgetId, originUri, uri, label, color)" +
+                    " VALUES ('$widgetId', '$originUri', '$uri', '$label', '$color')")
         }else{
             db.execSQL("INSERT OR REPLACE INTO PICS_TB" +
-                    " (idx, originUri, uri, label, color)" +
-                    " VALUES ('$idx', '$originUri', '$uri', '$label', '$color')")
+                    " (idx, widgetId, originUri, uri, label, color)" +
+                    " VALUES ('$idx', '$widgetId', '$originUri', '$uri', '$label', '$color')")
 
         }
 
-        setResult(MainActivity.RESULT_EDIT, intent)
+        setResult(RESULT_EDIT, intent)
         finish()
     }
 

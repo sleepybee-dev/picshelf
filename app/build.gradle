@@ -7,8 +7,8 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.gmail.slashb410.picshelf"
-        minSdkVersion 23
+        applicationId "com.gmail.sleepybee410.picshelf"
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -35,4 +35,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.github.yalantis:ucrop:2.2.2-native'
     implementation 'gun0912.ted:tedpermission:2.2.2'
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

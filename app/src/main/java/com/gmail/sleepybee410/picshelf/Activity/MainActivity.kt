@@ -24,6 +24,8 @@ import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class MainActivity : AppCompatActivity() {
@@ -140,7 +142,10 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, "SEL IMG : " + data!!.data, Toast.LENGTH_SHORT).show()
                         if (data!!.data != null) {
                             originUri = data.data
-                            var srcName = File(data.data.path).name
+                            val current = LocalDateTime.now()
+                            val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+                            val formatted = current.format(formatter)
+                            var srcName = "$formatted.jpg"
                             var destUri = File(
                                 Environment.getExternalStorageDirectory(),
                                 Environment.DIRECTORY_DCIM + File.separator + "PicShelf"
@@ -156,9 +161,7 @@ class MainActivity : AppCompatActivity() {
                                 .withAspectRatio(5.0F, 3.0F)
                                 .withOptions(option)
                                 .start(this)
-
                         }
-
                     }
                     UCrop.REQUEST_CROP -> {
 

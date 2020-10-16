@@ -6,9 +6,15 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.os.Environment
+import android.support.v4.content.FileProvider
+import android.util.Log
 import android.widget.RemoteViews
+import com.amitshekhar.BuildConfig
 import com.gmail.sleepybee410.picshelf.Activity.MainActivity
+import java.io.File
+import java.net.URI
 
 
 /**
@@ -30,6 +36,16 @@ class PicShelfAppWidget : AppWidgetProvider() {
         }
     }
 
+    override fun onAppWidgetOptionsChanged(
+        context: Context?,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetId: Int,
+        newOptions: Bundle?
+    ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+
+    }
+
     override fun onReceive(context: Context?, intent: Intent?) {
         super.onReceive(context, intent)
 
@@ -40,9 +56,9 @@ class PicShelfAppWidget : AppWidgetProvider() {
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         // When the user deletes the widget, delete the preference associated with it.
-        for (appWidgetId in appWidgetIds) {
-            PicShelfAppWidgetConfigureActivity.deleteTitlePref(context, appWidgetId)
-        }
+//        for (appWidgetId in appWidgetIds) {
+//            PicShelfAppWidgetConfigureActivity.deleteTitlePref(context, appWidgetId)
+//        }
     }
 
     override fun onEnabled(context: Context) {
@@ -68,6 +84,13 @@ class PicShelfAppWidget : AppWidgetProvider() {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             intent.data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
             // Instruct the widget manager to update the widget
+            val dbList = loadData(context);
+            val file = File(URI(dbList.last().uri.toString()))
+            Log.d("SB", dbList.last().uri.toString());
+            val uri = FileProvider.getUriForFile(context, "com.gmail.sleepybee410.picshelf.fileProvider", file)
+            context.grantUriPermission( "com.sec.android.app.launcher", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION );
+            views.setImageViewUri(R.id.iv_widget, uri)
+
             appWidgetManager.updateAppWidget(appWidgetId, views)
 //            views.setRemoteAdapter(appWidgetId, R.id.lv_widget, intent)
 
@@ -79,18 +102,15 @@ class PicShelfAppWidget : AppWidgetProvider() {
                     startActivityIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
-            val dbList = loadData(context);
 //            val uri = Uri.parse(
 //                dbList.last().originUri
 //            )
-            print("dblist : "+dbList.size);
-            views.setImageViewUri(R.id.iv_widget, dbList.last().originUri);
-//            views.setPendingIntentTemplate(R.id.lv_widget, startActivityPendingIntent)
+            views.setPendingIntentTemplate(R.id.iv_widget, startActivityPendingIntent)
 //            views.setEmptyView(R.id.lv_widget, R.i)
         }
 
 
-        fun loadData(context: Context): ArrayList<ListItem> {
+        private fun loadData(context: Context): ArrayList<ListItem> {
 
             val helper = SQLiteHelper(context)
             val db = helper.writableDatabase
@@ -119,6 +139,7 @@ class PicShelfAppWidget : AppWidgetProvider() {
 
             db.close()
 
+            print("dblist : "+items.size);
             return items
 
         }

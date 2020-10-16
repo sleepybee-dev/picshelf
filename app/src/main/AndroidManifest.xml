@@ -50,6 +50,18 @@
         <service android:name="com.gmail.sleepybee410.picshelf.ListViewWidgetService"
                  android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
+
+
+        <provider
+                android:authorities="com.gmail.sleepybee410.picshelf.fileProvider"
+                android:name="android.support.v4.content.FileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_path"/>
+        </provider>
+
     </application>
 
 </manifest>

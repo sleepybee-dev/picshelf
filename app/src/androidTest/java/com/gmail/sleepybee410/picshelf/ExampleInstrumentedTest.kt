@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.gmail.slashb410.picshelf", appContext.packageName)
+        assertEquals("com.gmail.sleepybee410.picshelf", appContext.packageName)
     }
 }
