@@ -10,13 +10,15 @@ data class PicItem(
     var originUri: Uri,
     var uri: Uri,
     var label: String,
-    var color: String
+    var color: String,
+    var frame: String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readParcelable(Uri::class.java.classLoader),
         parcel.readParcelable(Uri::class.java.classLoader),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString()
     ) {
@@ -29,6 +31,7 @@ data class PicItem(
         parcel.writeParcelable(uri, flags)
         parcel.writeString(label)
         parcel.writeString(color)
+        parcel.writeString(frame)
     }
 
     override fun describeContents(): Int {

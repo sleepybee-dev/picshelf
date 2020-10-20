@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.FileProvider
 import android.util.Log
+import android.view.View
 import android.widget.RemoteViews
 import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 import java.io.File
@@ -19,7 +20,7 @@ import java.net.URI
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in [PicShelfAppWidgetConfigureActivity]
  */
-class PicShelfAppWidget : AppWidgetProvider() {
+class PicShelfAppWidgetProvider : AppWidgetProvider() {
 
     var context : Context? = null
 
@@ -90,9 +91,16 @@ class PicShelfAppWidget : AppWidgetProvider() {
             val uri = FileProvider.getUriForFile(context, "com.gmail.sleepybee410.picshelf.fileProvider", file)
             context.grantUriPermission( "com.sec.android.app.launcher", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION );
             views.setImageViewUri(R.id.iv_widget, uri)
-
+            if (loadedItem.frame == "polaroid") {
+                views.setViewPadding(R.id.fl_frame_widget, 16, 16, 16, 72)
+                views.setTextViewText(R.id.tv_label_widget, loadedItem.label)
+                views.setViewVisibility(R.id.tv_label_widget, View.VISIBLE)
+            }
+            else {
+                views.setViewPadding(R.id.fl_frame_widget, 0, 0, 0, 0)
+                views.setViewVisibility(R.id.tv_label_widget, View.GONE)
+            }
             appWidgetManager.updateAppWidget(appWidgetId, views)
-//            views.setRemoteAdapter(appWidgetId, R.id.lv_widget, intent)
 
             val startActivityIntent = Intent(context, MainActivity::class.java)
             val startActivityPendingIntent =
@@ -102,11 +110,9 @@ class PicShelfAppWidget : AppWidgetProvider() {
                     startActivityIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
-//            val uri = Uri.parse(
-//                dbList.last().originUri
-//            )
+
             views.setPendingIntentTemplate(R.id.iv_widget, startActivityPendingIntent)
-//            views.setEmptyView(R.id.lv_widget, R.i)
+
         }
 
         private fun loadDataById(context: Context, widgetId: Int): PicItem? {
@@ -129,8 +135,9 @@ class PicShelfAppWidget : AppWidgetProvider() {
                         var color = cursor.getString(cursor.getColumnIndex("color"))
                         var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
                         var uri = cursor.getString(cursor.getColumnIndex("uri"))
+                        var frame = cursor.getString(cursor.getColumnIndex("frame"))
 
-                        var item = PicItem(idx, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color)
+                        var item = PicItem(idx, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color, frame)
                         items.add(item)
 
                     } while (cursor.moveToNext())

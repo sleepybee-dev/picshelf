@@ -31,7 +31,7 @@
                 android:name="com.gmail.sleepybee410.picshelf.Activity.EditActivity"
                 android:label="EDIT"/>
 
-        <receiver android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidget">
+        <receiver android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -61,6 +61,15 @@
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/file_path"/>
         </provider>
+
+        <receiver android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidget.ACTION_CLICK" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                    android:resource="@xml/pic_shelf_app_widget_info" />
+        </receiver>
 
     </application>
 

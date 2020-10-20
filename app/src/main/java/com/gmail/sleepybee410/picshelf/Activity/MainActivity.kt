@@ -80,8 +80,9 @@ class MainActivity : AppCompatActivity() {
                     var color = cursor.getString(cursor.getColumnIndex("color"))
                     var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
                     var uri = cursor.getString(cursor.getColumnIndex("uri"))
+                    var frame = cursor.getString(cursor.getColumnIndex("frame"))
 
-                    var item = PicItem(idx, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color)
+                    var item = PicItem(idx, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color, frame)
                     items.add(item)
 
                 } while (cursor.moveToNext())

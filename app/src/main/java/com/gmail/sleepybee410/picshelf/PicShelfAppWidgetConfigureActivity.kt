@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
- * The configuration screen for the [PicShelfAppWidget] AppWidget.
+ * The configuration screen for the [PicShelfAppWidgetProvider] AppWidget.
  */
 class PicShelfAppWidgetConfigureActivity : Activity() {
 
@@ -144,6 +144,7 @@ class PicShelfAppWidgetConfigureActivity : Activity() {
                         intentWillSended.putExtra("uri", UCrop.getOutput(data!!))
                         intentWillSended.putExtra("label", label)
                         intentWillSended.putExtra("color", color)
+                        intentWillSended.putExtra("frame", "no")
                         startActivityForResult(intentWillSended, 200)
                         Log.i("SB", "CROP DATA : " + UCrop.getOutput(data!!))
                     }
@@ -164,7 +165,7 @@ class PicShelfAppWidgetConfigureActivity : Activity() {
 
                 // It is the responsibility of the configuration activity to update the app widget
                 val appWidgetManager = AppWidgetManager.getInstance(context)
-                PicShelfAppWidget.updateAppWidget(context, appWidgetManager, appWidgetId)
+                PicShelfAppWidgetProvider.updateAppWidget(context, appWidgetManager, appWidgetId)
 
                 //            PicShelfAppWidget.Companion.updateAppWidget$app(context, appWidgetManager, mAppWidgetId);
 

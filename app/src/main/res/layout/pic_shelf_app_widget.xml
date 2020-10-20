@@ -1,14 +1,37 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/widget_margin"
                 android:background="#09C">
 
+    <FrameLayout
+            android:id="@+id/fl_frame_widget"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
     <ImageView
             android:id="@+id/iv_widget"
             android:scaleType="matrix"
             android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+    </FrameLayout>
 
-</FrameLayout>
+    <TextView
+            android:id="@+id/tv_label_widget"
+            android:layout_marginStart="16px"
+            android:layout_marginEnd="16px"
+            android:layout_marginBottom="16px"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"/>
+
+</RelativeLayout>
