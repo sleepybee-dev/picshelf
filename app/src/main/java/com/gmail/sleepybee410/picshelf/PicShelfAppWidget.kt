@@ -7,11 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.support.v4.content.FileProvider
 import android.util.Log
 import android.widget.RemoteViews
-import com.amitshekhar.BuildConfig
 import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 import java.io.File
 import java.net.URI
@@ -43,7 +41,9 @@ class PicShelfAppWidget : AppWidgetProvider() {
         newOptions: Bundle?
     ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
-
+        if (context != null && appWidgetManager != null) {
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -84,9 +84,9 @@ class PicShelfAppWidget : AppWidgetProvider() {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             intent.data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
             // Instruct the widget manager to update the widget
-            val dbList = loadData(context);
-            val file = File(URI(dbList.last().uri.toString()))
-            Log.d("SB", dbList.last().uri.toString());
+            val loadedItem = loadDataById(context, appWidgetId) ?: return
+            val file = File(URI(loadedItem.uri.toString()))
+            Log.d("SB", "=======uriDB : ${loadedItem.uri}")
             val uri = FileProvider.getUriForFile(context, "com.gmail.sleepybee410.picshelf.fileProvider", file)
             context.grantUriPermission( "com.sec.android.app.launcher", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION );
             views.setImageViewUri(R.id.iv_widget, uri)
@@ -109,8 +109,7 @@ class PicShelfAppWidget : AppWidgetProvider() {
 //            views.setEmptyView(R.id.lv_widget, R.i)
         }
 
-
-        private fun loadData(context: Context): ArrayList<ListItem> {
+        private fun loadDataById(context: Context, widgetId: Int): PicItem? {
 
             val helper = SQLiteHelper(context)
             val db = helper.writableDatabase
@@ -118,19 +117,20 @@ class PicShelfAppWidget : AppWidgetProvider() {
 //        var db = this.openOrCreateDatabase("picshelf", Context.MODE_PRIVATE, null)
 //        db.execSQL("CREATE TABLE IF NOT EXISTS PICS_TB;")
 
-            var cursor = db.rawQuery("SELECT * FROM PICS_TB", null)
-            var items : ArrayList<ListItem> = ArrayList()
+            var cursor = db.rawQuery("SELECT * FROM PICS_TB WHERE widgetId = ?", arrayOf(widgetId.toString()))
+            var items : ArrayList<PicItem> = ArrayList()
 
             if(cursor!=null){
                 if(cursor.moveToFirst()){
                     do{
                         var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
+                        var widgetId : Int = cursor.getInt(cursor.getColumnIndex("widgetId"))
                         var label = cursor.getString(cursor.getColumnIndex("label"))
                         var color = cursor.getString(cursor.getColumnIndex("color"))
                         var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
                         var uri = cursor.getString(cursor.getColumnIndex("uri"))
 
-                        var item = ListItem(idx, Uri.parse(originUri), Uri.parse(uri), label, color)
+                        var item = PicItem(idx, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color)
                         items.add(item)
 
                     } while (cursor.moveToNext())
@@ -139,8 +139,8 @@ class PicShelfAppWidget : AppWidgetProvider() {
 
             db.close()
 
-            print("dblist : "+items.size);
-            return items
+            return if (items.isEmpty()) null
+            else items[0]
 
         }
     }

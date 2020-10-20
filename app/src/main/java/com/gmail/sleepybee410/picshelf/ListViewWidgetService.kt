@@ -19,7 +19,7 @@ class ListViewWidgetService  : RemoteViewsService() {
 internal class ListViewRemoteViewsFactory(private val mContext: Context, intent: Intent) :
     RemoteViewsService.RemoteViewsFactory {
 
-    private var items: ArrayList<ListItem>? = null
+    private var items: ArrayList<PicItem>? = null
 
     override fun onCreate() {
 

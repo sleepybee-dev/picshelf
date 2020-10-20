@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.gmail.sleepybee410.picshelf.Activity.EditActivity
 import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 
-class ListAdapter (list : ArrayList<ListItem>) : RecyclerView.Adapter<ListAdapter.ViewHolder>(), View.OnClickListener {
+class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAdapter.ViewHolder>(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         var position = v!!.tag
@@ -23,7 +23,7 @@ class ListAdapter (list : ArrayList<ListItem>) : RecyclerView.Adapter<ListAdapte
 
     }
 
-    private var list = list
+    private var list = pic
     private lateinit var context : Context
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
@@ -43,12 +43,11 @@ class ListAdapter (list : ArrayList<ListItem>) : RecyclerView.Adapter<ListAdapte
             .into(holder.picView)
         holder.itemView.setOnLongClickListener {
             var builder : AlertDialog.Builder = AlertDialog.Builder(context)
-            var options : Array<String> = arrayOf("수정", "삭제")
+            var options : Array<String> = arrayOf("삭제")
 //            builder.
             builder.setItems(options, DialogInterface.OnClickListener { dialog, which ->
                 when(which){
-                    0-> edit(list[position])
-                    1->{
+                    0->{
                         GlobalUtils.deleteItem(context, list[position].originUri)
                         list.remove(list[position])
                     }
@@ -71,7 +70,7 @@ class ListAdapter (list : ArrayList<ListItem>) : RecyclerView.Adapter<ListAdapte
 
     }
 
-    private fun edit(item: ListItem) {
+    private fun edit(item: PicItem) {
 
         var intent = Intent(context, EditActivity::class.java)
         intent.putExtra("idx", item.idx)

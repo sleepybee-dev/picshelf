@@ -1,5 +1,6 @@
 package com.gmail.sleepybee410.picshelf.Activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,7 +13,7 @@ import android.support.design.widget.Snackbar
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.gmail.sleepybee410.picshelf.ListItem
+import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.PicShelfAppWidgetConfigureActivity.Companion.RESULT_EDIT
 import com.gmail.sleepybee410.picshelf.R
 import com.gmail.sleepybee410.picshelf.SQLiteHelper
@@ -20,7 +21,7 @@ import com.gmail.sleepybee410.picshelf.SQLiteHelper
 
 class EditActivity : AppCompatActivity() {
 
-    var resultItem : ListItem? = null
+    var resultItem : PicItem? = null
     var idx : Int = 0
     var widgetId : Int = 0
     lateinit var uri : Uri
@@ -84,7 +85,7 @@ class EditActivity : AppCompatActivity() {
 
         Snackbar.make(view, "SAVE", Snackbar.LENGTH_SHORT).show()
         var intent = Intent()
-        resultItem = ListItem(idx, originUri, uri, label, et_label_edit.text.toString())
+        resultItem = PicItem(idx, widgetId, originUri, uri, label, et_label_edit.text.toString())
 //        intent.putExtra("item", item!!)
         val helper = SQLiteHelper(this)
         val db = helper.writableDatabase
@@ -97,12 +98,15 @@ class EditActivity : AppCompatActivity() {
             db.execSQL("INSERT OR REPLACE INTO PICS_TB" +
                     " (idx, widgetId, originUri, uri, label, color)" +
                     " VALUES ('$idx', '$widgetId', '$originUri', '$uri', '$label', '$color')")
-
         }
 
         setResult(RESULT_EDIT, intent)
+        hideKeyboard(currentFocus ?: View(this))
         finish()
     }
 
-
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }

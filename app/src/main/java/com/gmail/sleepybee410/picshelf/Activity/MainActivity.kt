@@ -1,6 +1,5 @@
 package com.gmail.sleepybee410.picshelf.Activity
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,12 +12,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.gmail.sleepybee410.picshelf.ListAdapter
-import com.gmail.sleepybee410.picshelf.ListItem
+import com.gmail.sleepybee410.picshelf.PicListAdapter
+import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
 import com.gmail.sleepybee410.picshelf.SQLiteHelper
 import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
 import com.yalantis.ucrop.UCrop
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -42,40 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         //화면비율가져오기
         getItemSize()
-
         initList()
 
-        var permissionListener = object : PermissionListener {
-            override fun onPermissionGranted() {
-                Toast.makeText(this@MainActivity, "Permission Granted", Toast.LENGTH_LONG).show()
-                var intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.type = "image/jpeg"
-                startActivityForResult(Intent.createChooser(intent, "SELECT PIC"), REQUEST_SELECT)
-//            startActivityForResult(intent, 100)
-            }
-
-            override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-                Toast.makeText(
-                    this@MainActivity,
-                    "Permission Denied : " + deniedPermissions.toString(),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-
-        }
-
-        fab.setOnClickListener {
-
-            TedPermission.with(this)
-                .setPermissionListener(permissionListener)
-                .setRationaleMessage("저장소 접근 권한 필요")
-                .setDeniedMessage("[설정]-[권한]에서 허용 가능")
-//                .setPermissions(Manifest.permission_group.STORAGE)
-                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check()
-        }
     }
 
     private fun getItemSize() {
@@ -86,15 +52,15 @@ class MainActivity : AppCompatActivity() {
 
         //preference에서 가져오기
         var list = loadData()
-        var adapter : ListAdapter = ListAdapter(list)
+        var adapterPic : PicListAdapter = PicListAdapter(list)
 
         var mLayoutManager = LinearLayoutManager(this)
         rv_main.layoutManager = mLayoutManager
-        rv_main.adapter = adapter
+        rv_main.adapter = adapterPic
 
     }
 
-    private fun loadData(): ArrayList<ListItem> {
+    private fun loadData(): ArrayList<PicItem> {
 
         val helper = SQLiteHelper(this)
         val db = helper.writableDatabase
@@ -103,18 +69,19 @@ class MainActivity : AppCompatActivity() {
 //        db.execSQL("CREATE TABLE IF NOT EXISTS PICS_TB;")
 
         var cursor = db.rawQuery("SELECT * FROM PICS_TB", null)
-        var items : ArrayList<ListItem> = ArrayList()
+        var items : ArrayList<PicItem> = ArrayList()
 
         if(cursor!=null){
             if(cursor.moveToFirst()){
                 do{
                     var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
+                    var widgetId : Int = cursor.getInt(cursor.getColumnIndex("widgetId"))
                     var label = cursor.getString(cursor.getColumnIndex("label"))
                     var color = cursor.getString(cursor.getColumnIndex("color"))
                     var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
                     var uri = cursor.getString(cursor.getColumnIndex("uri"))
 
-                    var item = ListItem(idx, Uri.parse(originUri), Uri.parse(uri), label, color)
+                    var item = PicItem(idx, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color)
                     items.add(item)
 
                 } while (cursor.moveToNext())

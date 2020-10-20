@@ -103,7 +103,7 @@ class PicShelfAppWidgetConfigureActivity : Activity() {
                             var srcName = "$formatted.jpg"
                             var destUri = File(
                                 Environment.getExternalStorageDirectory(),
-                                Environment.DIRECTORY_DCIM + File.separator + "PicShelf"
+                                Environment.DIRECTORY_PICTURES + File.separator + "PicShelf"
                             )
                             if (!destUri.exists()) {
                                 destUri.mkdirs()
@@ -124,10 +124,11 @@ class PicShelfAppWidgetConfigureActivity : Activity() {
 
                         if (extras != null) {
                             appWidgetId = extras.getInt(
-                                AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID
+                                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                                AppWidgetManager.INVALID_APPWIDGET_ID
                             )
 
-                            Log.d("SB", "appwidgetid : "+appWidgetId);
+                            Log.d("SB", "appwidgetid : " + appWidgetId);
                         }
 
                         // If this activity was started with an intent without an app widget ID, finish with an error.
@@ -163,7 +164,7 @@ class PicShelfAppWidgetConfigureActivity : Activity() {
 
                 // It is the responsibility of the configuration activity to update the app widget
                 val appWidgetManager = AppWidgetManager.getInstance(context)
-//            PicShelfAppWidget.Companion.updateAppWidget$app(context, appWidgetManager, mAppWidgetId);
+                PicShelfAppWidget.updateAppWidget(context, appWidgetManager, appWidgetId)
 
                 //            PicShelfAppWidget.Companion.updateAppWidget$app(context, appWidgetManager, mAppWidgetId);
 
