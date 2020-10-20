@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
             if(cursor.moveToFirst()){
                 do{
                     var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
+                    var createDate = cursor.getString(cursor.getColumnIndex("createDate"))
                     var widgetId : Int = cursor.getInt(cursor.getColumnIndex("widgetId"))
                     var label = cursor.getString(cursor.getColumnIndex("label"))
                     var color = cursor.getString(cursor.getColumnIndex("color"))
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                     var uri = cursor.getString(cursor.getColumnIndex("uri"))
                     var frame = cursor.getString(cursor.getColumnIndex("frame"))
 
-                    var item = PicItem(idx, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color, frame)
+                    var item = PicItem(idx, createDate, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color, frame)
                     items.add(item)
 
                 } while (cursor.moveToNext())

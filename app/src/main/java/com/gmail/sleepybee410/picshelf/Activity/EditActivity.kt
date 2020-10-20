@@ -18,6 +18,7 @@ import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.PicShelfAppWidgetConfigureActivity.Companion.RESULT_EDIT
 import com.gmail.sleepybee410.picshelf.R
 import com.gmail.sleepybee410.picshelf.SQLiteHelper
+import java.time.LocalDateTime
 
 
 class EditActivity : AppCompatActivity() {
@@ -68,7 +69,11 @@ class EditActivity : AppCompatActivity() {
         }
 
         btn_confirm_edit.setOnClickListener { view ->
-            saveCropPic(view);
+            if (et_label_edit.text.isEmpty()){
+                Snackbar.make(view, "Please Input Label", Snackbar.LENGTH_LONG).show();
+            } else {
+                saveCropPic(view);
+            }
         }
 
         rg_frame_edit.setOnCheckedChangeListener { group, checkedId ->
@@ -79,7 +84,7 @@ class EditActivity : AppCompatActivity() {
                 }
                 R.id.rb_polaroid_edit -> {
                     frame = "polaroid"
-                    fl_frame_edit.setPadding(16, 16, 16, 72)
+                    fl_frame_edit.setPadding(16, 16, 16, 80)
                 }
             }
         }
@@ -96,24 +101,25 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun saveCropPic(view : View) {
+        val today = LocalDateTime.now().toString()
 
         label = et_label_edit.text.toString()
 
         Snackbar.make(view, "SAVE", Snackbar.LENGTH_SHORT).show()
         var intent = Intent()
-        resultItem = PicItem(idx, widgetId, originUri, uri, label, et_label_edit.text.toString(), frame)
+        resultItem = PicItem(idx, today, widgetId, originUri, uri, label, et_label_edit.text.toString(), frame)
 //        intent.putExtra("item", item!!)
         val helper = SQLiteHelper(this)
         val db = helper.writableDatabase
 
         if(idx==0){
             db.execSQL("INSERT INTO PICS_TB" +
-                    " (widgetId, originUri, uri, label, color, frame)" +
-                    " VALUES ('$widgetId', '$originUri', '$uri', '$label', '$color', '$frame')")
+                    " (createDate, widgetId, originUri, uri, label, color, frame)" +
+                    " VALUES ('$today', '$widgetId', '$originUri', '$uri', '$label', '$color', '$frame')")
         }else{
             db.execSQL("INSERT OR REPLACE INTO PICS_TB" +
-                    " (idx, widgetId, originUri, uri, label, color, frame)" +
-                    " VALUES ('$idx', '$widgetId', '$originUri', '$uri', '$label', '$color', '$frame')")
+                    " (idx, createDate, widgetId, originUri, uri, label, color, frame)" +
+                    " VALUES ('$idx', '$today', '$widgetId', '$originUri', '$uri', '$label', '$color', '$frame')")
         }
 
         setResult(RESULT_EDIT, intent)

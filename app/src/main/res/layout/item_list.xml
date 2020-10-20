@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/bgGray"
         android:padding="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <FrameLayout
-            app:layout_constraintLeft_toRightOf="@+id/iv_item"
-            app:layout_constraintTop_toTopOf="@id/iv_item"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:background="@color/btnWhite"
-            android:id="@+id/color_item"
-            android:layout_width="30dp"
-            android:layout_height="10dp"/>
-
-    <com.gmail.sleepybee410.picshelf.VerticalTextView
-            android:background="@color/btnWhite"
-            android:layout_width="30dp" android:layout_height="70dp"
-            android:id="@+id/tv_label_item"
-            android:text="LABEL"
-            app:layout_constraintTop_toBottomOf="@+id/color_item"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/iv_item"/>
-
     <ImageView
             android:background="#ffffff"
-            android:id="@+id/iv_item" android:layout_width="0dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_label_item"
-            app:layout_constraintLeft_toRightOf="@+id/tv_label_item"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:id="@+id/iv_item"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:scaleType="matrix"
+            android:layout_height="100dp"/>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+        <TextView
+                android:id="@+id/tv_label_item"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/tv_date_item"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <ImageButton
+            android:id="@+id/btn_delete_item"
+            android:layout_margin="12dp"
+        android:src="@android:drawable/ic_menu_delete"
+            android:background="@android:color/transparent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+</LinearLayout>

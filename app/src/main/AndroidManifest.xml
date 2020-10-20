@@ -34,6 +34,7 @@
         <receiver android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidgetProvider.ACTION_CLICK" />
             </intent-filter>
 
             <meta-data
@@ -51,7 +52,6 @@
                  android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
 
-
         <provider
                 android:authorities="com.gmail.sleepybee410.picshelf.fileProvider"
                 android:name="android.support.v4.content.FileProvider"
@@ -61,15 +61,6 @@
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/file_path"/>
         </provider>
-
-        <receiver android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidgetProvider" >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidget.ACTION_CLICK" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                    android:resource="@xml/pic_shelf_app_widget_info" />
-        </receiver>
 
     </application>
 

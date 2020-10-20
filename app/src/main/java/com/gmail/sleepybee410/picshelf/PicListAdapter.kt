@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -38,13 +39,14 @@ class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAd
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.label.text = list!![position].label
+        holder.date.text = list!![position].createDate.substring(0, 10)
         val into = Glide.with(context)
             .load(list!![position].uri)
             .into(holder.picView)
-        holder.itemView.setOnLongClickListener {
+        holder.btnDelete.setOnClickListener {
             var builder : AlertDialog.Builder = AlertDialog.Builder(context)
             var options : Array<String> = arrayOf("삭제")
-//            builder.
+
             builder.setItems(options, DialogInterface.OnClickListener { dialog, which ->
                 when(which){
                     0->{
@@ -84,7 +86,9 @@ class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAd
 
     class ViewHolder (view: View) : RecyclerView.ViewHolder(view){
         var label = view.findViewById(R.id.tv_label_item) as TextView
+        var date = view.findViewById(R.id.tv_date_item) as TextView
         var picView  = view.findViewById(R.id.iv_item) as ImageView
+        var btnDelete = view.findViewById(R.id.btn_delete_item) as ImageButton
 
     }
 

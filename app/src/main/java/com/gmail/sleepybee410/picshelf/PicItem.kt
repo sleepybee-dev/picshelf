@@ -6,6 +6,7 @@ import android.os.Parcelable
 
 data class PicItem(
     var idx : Int,
+    var createDate : String,
     var widgetId : Int,
     var originUri: Uri,
     var uri: Uri,
@@ -15,6 +16,7 @@ data class PicItem(
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
+        parcel.readString(),
         parcel.readInt(),
         parcel.readParcelable(Uri::class.java.classLoader),
         parcel.readParcelable(Uri::class.java.classLoader),
@@ -26,6 +28,7 @@ data class PicItem(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(idx)
+        parcel.writeString(createDate)
         parcel.writeInt(widgetId)
         parcel.writeParcelable(originUri, flags)
         parcel.writeParcelable(uri, flags)

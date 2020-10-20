@@ -11,6 +11,7 @@ import android.support.v4.content.FileProvider
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
+import com.gmail.sleepybee410.picshelf.Activity.EditActivity
 import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 import java.io.File
 import java.net.URI
@@ -48,11 +49,22 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-
-        var manager = AppWidgetManager.getInstance(context)
-//        initUI(context, manager, manager.getAppWidgetIds(object : ComponentName(context, getclass)))
-
+        val intentAction = intent!!.action
+        if (intentAction == ACTION_CLICK) {
+            Log.d("SB", "=========ACTION_CLICK")
+//            updateWidgetState(paramContext, str)
+//            val extras = intent!!.extras
+//            val appWidgetId = extras.getInt("appwidgetid")
+//            context?.startActivity(intent);
+//            val objNum = myPrefs.getInt(PREF_PREFIX_KEY + appWidgetId, -1)
+//            if (objNum > -1) {
+//                val pa: PageAction = EditActivity
+//                    .GetPageObjectAtIndex(context, widgetPageName, objNum) as PageAction
+//                pa.ExecuteActionFromWidgetClick(context)
+//            }
+        } else {
+            super.onReceive(context, intent)
+        }
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
@@ -72,6 +84,8 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
 
     companion object {
 
+        val ACTION_CLICK = "ACTION_CLICK_WIDGET"
+
         internal fun updateAppWidget(
             context: Context, appWidgetManager: AppWidgetManager,
             appWidgetId: Int
@@ -88,11 +102,19 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
             val loadedItem = loadDataById(context, appWidgetId) ?: return
             val file = File(URI(loadedItem.uri.toString()))
             Log.d("SB", "=======uriDB : ${loadedItem.uri}")
-            val uri = FileProvider.getUriForFile(context, "com.gmail.sleepybee410.picshelf.fileProvider", file)
-            context.grantUriPermission( "com.sec.android.app.launcher", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION );
+            val uri = FileProvider.getUriForFile(
+                context,
+                "com.gmail.sleepybee410.picshelf.fileProvider",
+                file
+            )
+            context.grantUriPermission(
+                "com.sec.android.app.launcher",
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            );
             views.setImageViewUri(R.id.iv_widget, uri)
             if (loadedItem.frame == "polaroid") {
-                views.setViewPadding(R.id.fl_frame_widget, 16, 16, 16, 72)
+                views.setViewPadding(R.id.fl_frame_widget, 16, 16, 16, 80)
                 views.setTextViewText(R.id.tv_label_widget, loadedItem.label)
                 views.setViewVisibility(R.id.tv_label_widget, View.VISIBLE)
             }
@@ -102,16 +124,18 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
             }
             appWidgetManager.updateAppWidget(appWidgetId, views)
 
-            val startActivityIntent = Intent(context, MainActivity::class.java)
+            val startActivityIntent = Intent(context, PicShelfAppWidgetProvider::class.java)
+            startActivityIntent.action = ACTION_CLICK
             val startActivityPendingIntent =
-                PendingIntent.getActivity(
+                PendingIntent.getBroadcast(
                     context,
                     0,
                     startActivityIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    0
                 )
 
-            views.setPendingIntentTemplate(R.id.iv_widget, startActivityPendingIntent)
+
+            views.setOnClickPendingIntent(R.id.fl_frame_widget, startActivityPendingIntent)
 
         }
 
@@ -123,13 +147,17 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
 //        var db = this.openOrCreateDatabase("picshelf", Context.MODE_PRIVATE, null)
 //        db.execSQL("CREATE TABLE IF NOT EXISTS PICS_TB;")
 
-            var cursor = db.rawQuery("SELECT * FROM PICS_TB WHERE widgetId = ?", arrayOf(widgetId.toString()))
+            var cursor = db.rawQuery(
+                "SELECT * FROM PICS_TB WHERE widgetId = ?",
+                arrayOf(widgetId.toString())
+            )
             var items : ArrayList<PicItem> = ArrayList()
 
             if(cursor!=null){
                 if(cursor.moveToFirst()){
                     do{
                         var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
+                        var createDate = cursor.getString(cursor.getColumnIndex("createDate"))
                         var widgetId : Int = cursor.getInt(cursor.getColumnIndex("widgetId"))
                         var label = cursor.getString(cursor.getColumnIndex("label"))
                         var color = cursor.getString(cursor.getColumnIndex("color"))
@@ -137,7 +165,16 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
                         var uri = cursor.getString(cursor.getColumnIndex("uri"))
                         var frame = cursor.getString(cursor.getColumnIndex("frame"))
 
-                        var item = PicItem(idx, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color, frame)
+                        var item = PicItem(
+                            idx,
+                            createDate,
+                            widgetId,
+                            Uri.parse(originUri),
+                            Uri.parse(uri),
+                            label,
+                            color,
+                            frame
+                        )
                         items.add(item)
 
                     } while (cursor.moveToNext())
