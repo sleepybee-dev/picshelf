@@ -1,4 +1,4 @@
-package com.gmail.sleepybee410.picshelf
+package com.gmail.sleepybee410.picshelf.adapter
 
 import android.app.AlertDialog
 import android.content.Context
@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gmail.sleepybee410.picshelf.Activity.EditActivity
 import com.gmail.sleepybee410.picshelf.Activity.MainActivity
+import com.gmail.sleepybee410.picshelf.GlobalUtils
+import com.gmail.sleepybee410.picshelf.PicItem
+import com.gmail.sleepybee410.picshelf.R
 
 class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAdapter.ViewHolder>(), View.OnClickListener {
 

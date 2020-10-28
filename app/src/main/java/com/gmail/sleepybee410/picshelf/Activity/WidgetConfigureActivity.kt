@@ -1,4 +1,4 @@
-package com.gmail.sleepybee410.picshelf
+package com.gmail.sleepybee410.picshelf.Activity
 
 import android.Manifest
 import android.app.Activity
@@ -11,7 +11,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
-import com.gmail.sleepybee410.picshelf.Activity.EditActivity
+import com.gmail.sleepybee410.picshelf.WidgetProvider
+import com.gmail.sleepybee410.picshelf.R
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yalantis.ucrop.UCrop
@@ -21,11 +22,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
- * The configuration screen for the [PicShelfAppWidgetProvider] AppWidget.
+ * The configuration screen for the [WidgetProvider] AppWidget.
  */
-class PicShelfAppWidgetConfigureActivity : Activity() {
+class WidgetConfigureActivity : Activity() {
 
-    private var context: Context = this@PicShelfAppWidgetConfigureActivity;
+    private var context: Context = this@WidgetConfigureActivity;
     var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
     private var originUri: Uri? = null
@@ -50,46 +51,43 @@ class PicShelfAppWidgetConfigureActivity : Activity() {
         setResult(RESULT_CANCELED)
         setContentView(R.layout.pic_shelf_app_widget_configure)
 
-
-
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
-//                Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show()
-                var intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.type = "image/jpg"
-                startActivityForResult(
-                    Intent.createChooser(intent, "SELECT PIC"),
-                    REQUEST_SELECT
-                )
+                Toast.makeText(context, "Permission Granted", Toast.LENGTH_LONG).show()
             }
 
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-//                Toast.makeText( F
-//                    this,
-//                    "Permission Denied : " + deniedPermissions.toString(),
-//                    Toast.LENGTH_LONG
-//                ).show()
+                Toast.makeText(
+                    context,
+                    "Permission Denied : " + deniedPermissions.toString(),
+                    Toast.LENGTH_LONG
+                ).show()
             }
-
         }
 
-        btn_load_widget.setOnClickListener {
-            TedPermission.with(this)
-                .setPermissionListener(permissionListener)
-                .setRationaleMessage("저장소 접근 권한 필요")
-                .setDeniedMessage("[설정]-[권한]에서 허용 가능")
+        TedPermission.with(this)
+            .setPermissionListener(permissionListener)
+            .setRationaleMessage("저장소 접근 권한 필요")
+            .setDeniedMessage("[설정]-[권한]에서 허용 가능")
 //                .setPermissions(Manifest.permission_group.STORAGE)
-                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check()
+            .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
+            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .check()
+
+        btn_load_configure.setOnClickListener {
+            var intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "image/jpg"
+            startActivityForResult(
+                Intent.createChooser(intent, "SELECT PIC"),
+                REQUEST_SELECT
+            )
         }
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-//        Toast.makeText(this, "onactivityresult : "+data!!.data + "\nresultcode : "+resultCode, Toast.LENGTH_SHORT).show()
         when (resultCode) {
             RESULT_OK -> {
                 when (requestCode) {
@@ -165,7 +163,7 @@ class PicShelfAppWidgetConfigureActivity : Activity() {
 
                 // It is the responsibility of the configuration activity to update the app widget
                 val appWidgetManager = AppWidgetManager.getInstance(context)
-                PicShelfAppWidgetProvider.updateAppWidget(context, appWidgetManager, appWidgetId)
+                WidgetProvider.updateAppWidget(context, appWidgetManager, appWidgetId)
 
                 //            PicShelfAppWidget.Companion.updateAppWidget$app(context, appWidgetManager, mAppWidgetId);
 

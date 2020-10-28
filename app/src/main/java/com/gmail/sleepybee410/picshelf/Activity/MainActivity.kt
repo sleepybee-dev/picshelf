@@ -9,23 +9,16 @@ import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gmail.sleepybee410.FinishDialog
-import com.gmail.sleepybee410.picshelf.PicListAdapter
+import com.gmail.sleepybee410.picshelf.adapter.PicListAdapter
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
 import com.gmail.sleepybee410.picshelf.SQLiteHelper
-import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.testing.FakeReviewManager
-import com.gun0912.tedpermission.PermissionListener
 import com.yalantis.ucrop.UCrop
 
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.dialog_finish.*
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -181,21 +174,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-//        val manager = ReviewManagerFactory.create(this)
-        val manager = FakeReviewManager(this)
-
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener { request ->
-            if (request.isSuccessful) {
-                // We got the ReviewInfo object
-                val reviewInfo = request.result
-                val flow = manager.launchReviewFlow(this, reviewInfo)
-                flow.addOnCompleteListener { _ ->
-                }
-            } else {
-                // There was some problem, continue regardless of the result.
-            }
-        }
-    }
+//    override fun onBackPressed() {
+////        val manager = ReviewManagerFactory.create(this)
+//        val manager = FakeReviewManager(this)
+//
+//        val request = manager.requestReviewFlow()
+//        request.addOnCompleteListener { request ->
+//            if (request.isSuccessful) {
+//                // We got the ReviewInfo object
+//                val reviewInfo = request.result
+//                val flow = manager.launchReviewFlow(this, reviewInfo)
+//                flow.addOnCompleteListener { _ ->
+//                }
+//            } else {
+//                // There was some problem, continue regardless of the result.
+//            }
+//        }
+//    }
 }

@@ -1,24 +1,18 @@
 package com.gmail.sleepybee410.picshelf
 
 import android.app.PendingIntent
-import android.app.PendingIntent.getActivity
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.FileProvider
 import com.gmail.sleepybee410.picshelf.Activity.EditActivity
-import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 import java.io.File
-import java.io.FileNotFoundException
-import java.io.IOException
 import java.net.URI
 
 
@@ -26,7 +20,7 @@ import java.net.URI
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in [PicShelfAppWidgetConfigureActivity]
  */
-class PicShelfAppWidgetProvider : AppWidgetProvider() {
+class WidgetProvider : AppWidgetProvider() {
 
     var context : Context? = null
 
@@ -137,7 +131,7 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
                 views.setViewVisibility(R.id.tv_label_widget, View.GONE)
             }
 
-            val startActivityIntent = Intent(context, PicShelfAppWidgetProvider::class.java)
+            val startActivityIntent = Intent(context, WidgetProvider::class.java)
             startActivityIntent.action = ACTION_CLICK
             startActivityIntent.putExtra("widgetId", appWidgetId)
             val startActivityPendingIntent =

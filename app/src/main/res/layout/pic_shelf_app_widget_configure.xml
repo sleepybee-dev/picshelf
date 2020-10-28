@@ -8,30 +8,19 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/configure"
+            android:text="HISTORY"
             android:layout_marginBottom="8dp"/>
 
-    <EditText
-            android:id="@+id/appwidget_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-
-    <ImageView
+    <GridLayout
+            android:id="@+id/gl_history_configure"
             android:layout_width="match_parent"
             android:layout_height="300dp"/>
 
     <Button
-            android:id="@+id/btn_load_widget"
+            android:id="@+id/btn_load_configure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LOAD"
+            android:text="LOAD NEW PICTURE"
             android:layout_marginTop="8dp"/>
 
-    <Button
-            android:id="@+id/btn_display_widget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="DISPLAY"
-            android:layout_marginTop="8dp"/>
 </LinearLayout>

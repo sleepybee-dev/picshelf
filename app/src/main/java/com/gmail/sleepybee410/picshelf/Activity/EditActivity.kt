@@ -12,11 +12,9 @@ import kotlinx.android.synthetic.main.activity_edit.*
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.gmail.sleepybee410.FinishDialog
 import com.gmail.sleepybee410.picshelf.*
-import com.gmail.sleepybee410.picshelf.PicShelfAppWidgetConfigureActivity.Companion.RESULT_EDIT
+import com.gmail.sleepybee410.picshelf.Activity.WidgetConfigureActivity.Companion.RESULT_EDIT
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 
@@ -58,6 +56,22 @@ class EditActivity : AppCompatActivity() {
 
         et_label_edit.setText(label)
 
+        rb_no_frame_edit.isChecked = frame == "no"
+        rb_default_edit.isChecked = frame == "default"
+        rb_polaroid_edit.isChecked = frame == "polaroid"
+
+        when (frame) {
+            "no" -> {
+                fl_frame_edit.setPadding(0,0,0,0)
+            }
+            "default" -> {
+                fl_frame_edit.setPadding(16, 16, 16, 16)
+            }
+            "polaroid" -> {
+                fl_frame_edit.setPadding(16, 16, 16, 80)
+            }
+        }
+
         rg_frame_edit.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.rb_no_frame_edit -> {
@@ -74,10 +88,6 @@ class EditActivity : AppCompatActivity() {
                 }
             }
         }
-
-        rb_no_frame_edit.isChecked = frame == "no"
-        rb_default_edit.isChecked = frame == "default"
-        rb_polaroid_edit.isChecked = frame == "polaroid"
 
         val mgr = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -136,7 +146,7 @@ class EditActivity : AppCompatActivity() {
                     " VALUES ('$idx', '$today', '$widgetId', '$originUri', '$uri', '$label', '$color', '$frame')")
 
             val appWidgetManager = AppWidgetManager.getInstance(this)
-            PicShelfAppWidgetProvider.updateAppWidget(this, appWidgetManager, widgetId)
+            WidgetProvider.updateAppWidget(this, appWidgetManager, widgetId)
         }
 
         setResult(RESULT_EDIT, intent)
