@@ -32,12 +32,21 @@
             android:layout_height="wrap_content">
 
             <RadioButton
-                    android:checked="true"
+                    android:checked="false"
                     android:id="@+id/rb_no_frame_edit"
                     android:layout_margin="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
                     android:text="No Frame"/>
+
+            <RadioButton
+                    android:checked="true"
+                    android:id="@+id/rb_default_edit"
+                    android:layout_margin="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="56dp"
+                    android:text="Default"/>
+
             <RadioButton
                     android:checked="false"
                     android:id="@+id/rb_polaroid_edit"

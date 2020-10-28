@@ -1,19 +1,24 @@
 package com.gmail.sleepybee410.picshelf
 
 import android.app.PendingIntent
+import android.app.PendingIntent.getActivity
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.content.FileProvider
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.content.FileProvider
 import com.gmail.sleepybee410.picshelf.Activity.EditActivity
 import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
 import java.net.URI
 
 
@@ -53,9 +58,13 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
         if (intentAction == ACTION_CLICK) {
             Log.d("SB", "=========ACTION_CLICK")
 //            updateWidgetState(paramContext, str)
-//            val extras = intent!!.extras
-//            val appWidgetId = extras.getInt("appwidgetid")
-//            context?.startActivity(intent);
+            val extras = intent!!.extras
+            val appWidgetId = extras!!.getInt("widgetId")
+            val editIntent = Intent(context, EditActivity::class.java)
+            editIntent.putExtra("widgetId", appWidgetId)
+            editIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context!!.startActivity(editIntent)
+//            intent.
 //            val objNum = myPrefs.getInt(PREF_PREFIX_KEY + appWidgetId, -1)
 //            if (objNum > -1) {
 //                val pa: PageAction = EditActivity
@@ -107,6 +116,7 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
                 "com.gmail.sleepybee410.picshelf.fileProvider",
                 file
             )
+
             context.grantUriPermission(
                 "com.sec.android.app.launcher",
                 uri,
@@ -118,25 +128,29 @@ class PicShelfAppWidgetProvider : AppWidgetProvider() {
                 views.setTextViewText(R.id.tv_label_widget, loadedItem.label)
                 views.setViewVisibility(R.id.tv_label_widget, View.VISIBLE)
             }
+            else if (loadedItem.frame == "default") {
+                views.setViewPadding(R.id.fl_frame_widget, 16, 16, 16, 16)
+                views.setViewVisibility(R.id.tv_label_widget, View.GONE)
+            }
             else {
                 views.setViewPadding(R.id.fl_frame_widget, 0, 0, 0, 0)
                 views.setViewVisibility(R.id.tv_label_widget, View.GONE)
             }
-            appWidgetManager.updateAppWidget(appWidgetId, views)
 
             val startActivityIntent = Intent(context, PicShelfAppWidgetProvider::class.java)
             startActivityIntent.action = ACTION_CLICK
+            startActivityIntent.putExtra("widgetId", appWidgetId)
             val startActivityPendingIntent =
                 PendingIntent.getBroadcast(
                     context,
                     0,
                     startActivityIntent,
-                    0
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
-
 
             views.setOnClickPendingIntent(R.id.fl_frame_widget, startActivityPendingIntent)
 
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
 
         private fun loadDataById(context: Context, widgetId: Int): PicItem? {

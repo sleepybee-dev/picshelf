@@ -1,23 +1,23 @@
 package com.gmail.sleepybee410.picshelf.Activity
 
 import android.app.Activity
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_edit.*
-import android.support.design.widget.Snackbar
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioGroup
-import com.gmail.sleepybee410.picshelf.PicItem
+import androidx.appcompat.app.AppCompatActivity
+import com.gmail.sleepybee410.FinishDialog
+import com.gmail.sleepybee410.picshelf.*
 import com.gmail.sleepybee410.picshelf.PicShelfAppWidgetConfigureActivity.Companion.RESULT_EDIT
-import com.gmail.sleepybee410.picshelf.R
-import com.gmail.sleepybee410.picshelf.SQLiteHelper
+import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 
 
@@ -36,19 +36,47 @@ class EditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-        idx = intent.extras.get("idx") as Int
-        widgetId = intent.extras.get("widgetId") as Int
-        uri = intent.extras.get("uri") as Uri
-        originUri = intent.extras.get("originUri") as Uri
-        label = intent.extras.get("label") as String
-        color = intent.extras.get("color") as String
-        frame = intent.extras.get("frame") as String
+        widgetId = intent.extras!!.get("widgetId") as Int
+        resultItem = GlobalUtils.loadByWidgetId(this, widgetId)
+
+        if(resultItem == null) {
+            idx = intent.extras.get("idx") as Int
+            uri = intent.extras.get("uri") as Uri
+            originUri = intent.extras.get("originUri") as Uri
+            label = intent.extras.get("label") as String
+            color = intent.extras.get("color") as String
+        } else {
+            idx = resultItem!!.idx
+            uri = resultItem!!.uri
+            originUri = resultItem!!.originUri
+            label = resultItem!!.label
+            color = resultItem!!.color
+            frame = resultItem!!.frame
+        }
 
         Log.i("SB", "originUri : $originUri")
 
         et_label_edit.setText(label)
 
+        rg_frame_edit.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.rb_no_frame_edit -> {
+                    frame = "no"
+                    fl_frame_edit.setPadding(0,0,0,0)
+                }
+                R.id.rb_default_edit -> {
+                    frame = "default"
+                    fl_frame_edit.setPadding(16, 16, 16, 16)
+                }
+                R.id.rb_polaroid_edit -> {
+                    frame = "polaroid"
+                    fl_frame_edit.setPadding(16, 16, 16, 80)
+                }
+            }
+        }
+
         rb_no_frame_edit.isChecked = frame == "no"
+        rb_default_edit.isChecked = frame == "default"
         rb_polaroid_edit.isChecked = frame == "polaroid"
 
         val mgr = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -76,20 +104,6 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
-        rg_frame_edit.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.rb_no_frame_edit -> {
-                    frame = "no"
-                    fl_frame_edit.setPadding(0,0,0,0)
-                }
-                R.id.rb_polaroid_edit -> {
-                    frame = "polaroid"
-                    fl_frame_edit.setPadding(16, 16, 16, 80)
-                }
-            }
-        }
-
-
         if (uri != null) {
             Log.i("SB", "EDIT uri : " + uri!!.toString())
 
@@ -97,7 +111,6 @@ class EditActivity : AppCompatActivity() {
                 .load(uri)
                 .into(iv_edit)
         }
-
     }
 
     private fun saveCropPic(view : View) {
@@ -116,10 +129,14 @@ class EditActivity : AppCompatActivity() {
             db.execSQL("INSERT INTO PICS_TB" +
                     " (createDate, widgetId, originUri, uri, label, color, frame)" +
                     " VALUES ('$today', '$widgetId', '$originUri', '$uri', '$label', '$color', '$frame')")
+
         }else{
             db.execSQL("INSERT OR REPLACE INTO PICS_TB" +
                     " (idx, createDate, widgetId, originUri, uri, label, color, frame)" +
                     " VALUES ('$idx', '$today', '$widgetId', '$originUri', '$uri', '$label', '$color', '$frame')")
+
+            val appWidgetManager = AppWidgetManager.getInstance(this)
+            PicShelfAppWidgetProvider.updateAppWidget(this, appWidgetManager, widgetId)
         }
 
         setResult(RESULT_EDIT, intent)
@@ -131,4 +148,5 @@ class EditActivity : AppCompatActivity() {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 }

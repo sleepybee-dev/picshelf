@@ -10,8 +10,8 @@ class SQLiteHelper(context : Context) : SQLiteOpenHelper(context, "picshelfdb", 
     override fun onCreate(db: SQLiteDatabase?) {
         db!!.execSQL("CREATE TABLE IF NOT EXISTS PICS_TB (" +
                 "idx INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "widgetId VARCHAR(100), " +
                 "createDate VARCHAR(100), " +
+                "widgetId INTEGER, " +
                 "originUri VARCHAR(100), " +
                 "uri VARCHAR(100), " +
                 "label VARCHAR(20), " +

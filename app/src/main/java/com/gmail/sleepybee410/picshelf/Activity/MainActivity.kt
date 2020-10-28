@@ -6,21 +6,26 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.gmail.sleepybee410.FinishDialog
 import com.gmail.sleepybee410.picshelf.PicListAdapter
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
 import com.gmail.sleepybee410.picshelf.SQLiteHelper
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import com.gun0912.tedpermission.PermissionListener
 import com.yalantis.ucrop.UCrop
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.dialog_finish.*
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -36,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
 
         //화면비율가져오기
         getItemSize()
@@ -49,7 +54,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initList() {
-
         //preference에서 가져오기
         var list = loadData()
         var adapterPic : PicListAdapter = PicListAdapter(list)
@@ -102,6 +106,7 @@ class MainActivity : AppCompatActivity() {
     private var idx : Int = 0
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
 //        Toast.makeText(this, "onactivityresult : "+data!!.data + "\nresultcode : "+resultCode, Toast.LENGTH_SHORT).show()
         when (resultCode) {
@@ -176,4 +181,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+//        val manager = ReviewManagerFactory.create(this)
+        val manager = FakeReviewManager(this)
+
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { request ->
+            if (request.isSuccessful) {
+                // We got the ReviewInfo object
+                val reviewInfo = request.result
+                val flow = manager.launchReviewFlow(this, reviewInfo)
+                flow.addOnCompleteListener { _ ->
+                }
+            } else {
+                // There was some problem, continue regardless of the result.
+            }
+        }
+    }
 }
