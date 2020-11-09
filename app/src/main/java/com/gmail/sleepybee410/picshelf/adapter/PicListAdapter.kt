@@ -37,14 +37,14 @@ class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAd
     }
 
     override fun getItemCount(): Int {
-        return list!!.size
+        return list.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.label.text = list!![position].label
-        holder.date.text = list!![position].createDate.substring(0, 10)
+        holder.label.text = list[position].label
+        holder.date.text = list[position].createDate.substring(0, 10)
         val into = Glide.with(context)
-            .load(list!![position].uri)
+            .load(list[position].uri)
             .into(holder.picView)
         holder.btnDelete.setOnClickListener {
             var builder : AlertDialog.Builder = AlertDialog.Builder(context)

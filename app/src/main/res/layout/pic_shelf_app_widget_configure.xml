@@ -11,8 +11,8 @@
             android:text="HISTORY"
             android:layout_marginBottom="8dp"/>
 
-    <GridLayout
-            android:id="@+id/gl_history_configure"
+    <GridView
+            android:id="@+id/gv_history_configure"
             android:layout_width="match_parent"
             android:layout_height="300dp"/>
 

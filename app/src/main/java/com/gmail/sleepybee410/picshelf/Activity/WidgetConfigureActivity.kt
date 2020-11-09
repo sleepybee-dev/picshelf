@@ -11,8 +11,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
+import com.gmail.sleepybee410.picshelf.GlobalUtils
+import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.WidgetProvider
 import com.gmail.sleepybee410.picshelf.R
+import com.gmail.sleepybee410.picshelf.adapter.HistoryGridAdapter
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yalantis.ucrop.UCrop
@@ -73,6 +76,10 @@ class WidgetConfigureActivity : Activity() {
             .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
+
+        val gridItems : ArrayList<PicItem> = GlobalUtils.loadAll(this)
+        gv_history_configure.numColumns = 3
+        gv_history_configure.adapter = HistoryGridAdapter(this, gridItems)
 
         btn_load_configure.setOnClickListener {
             var intent = Intent(Intent.ACTION_GET_CONTENT)

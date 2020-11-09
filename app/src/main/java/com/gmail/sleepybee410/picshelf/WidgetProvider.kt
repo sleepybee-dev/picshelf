@@ -54,8 +54,12 @@ class WidgetProvider : AppWidgetProvider() {
 //            updateWidgetState(paramContext, str)
             val extras = intent!!.extras
             val appWidgetId = extras!!.getInt("widgetId")
+            val dbIdx = extras!!.getInt("dbIdx")
             val editIntent = Intent(context, EditActivity::class.java)
             editIntent.putExtra("widgetId", appWidgetId)
+            editIntent.putExtra("dbIdx", dbIdx)
+
+            Log.d("SB", "=========dbIdx : $dbIdx")
             editIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context!!.startActivity(editIntent)
 //            intent.
@@ -104,6 +108,7 @@ class WidgetProvider : AppWidgetProvider() {
             // Instruct the widget manager to update the widget
             val loadedItem = loadDataById(context, appWidgetId) ?: return
             val file = File(URI(loadedItem.uri.toString()))
+            val dbIdx = loadedItem.idx
             Log.d("SB", "=======uriDB : ${loadedItem.uri}")
             val uri = FileProvider.getUriForFile(
                 context,
@@ -134,6 +139,7 @@ class WidgetProvider : AppWidgetProvider() {
             val startActivityIntent = Intent(context, WidgetProvider::class.java)
             startActivityIntent.action = ACTION_CLICK
             startActivityIntent.putExtra("widgetId", appWidgetId)
+            startActivityIntent.putExtra("dbIdx", dbIdx)
             val startActivityPendingIntent =
                 PendingIntent.getBroadcast(
                     context,
@@ -192,7 +198,9 @@ class WidgetProvider : AppWidgetProvider() {
             db.close()
 
             return if (items.isEmpty()) null
-            else items[0]
+            else {
+                items[0]
+            }
 
         }
     }

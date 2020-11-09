@@ -24,6 +24,7 @@ class EditActivity : AppCompatActivity() {
     var resultItem : PicItem? = null
     var idx : Int = 0
     var widgetId : Int = 0
+    var dbIdx : Int? = 0
     lateinit var uri : Uri
     lateinit var originUri : Uri
     var label : String = ""
@@ -34,8 +35,17 @@ class EditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         widgetId = intent.extras!!.get("widgetId") as Int
-        resultItem = GlobalUtils.loadByWidgetId(this, widgetId)
+        dbIdx = intent.extras!!.get("dbIdx") as Int?
+
+        Log.i("SB", "========dbIdx : $dbIdx")
+        if (dbIdx != null)
+            resultItem = GlobalUtils.loadByDBIdx(this, dbIdx!!)
 
         if(resultItem == null) {
             idx = intent.extras.get("idx") as Int
@@ -121,6 +131,12 @@ class EditActivity : AppCompatActivity() {
                 .load(uri)
                 .into(iv_edit)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        widgetId = 0
+        resultItem = null
     }
 
     private fun saveCropPic(view : View) {
