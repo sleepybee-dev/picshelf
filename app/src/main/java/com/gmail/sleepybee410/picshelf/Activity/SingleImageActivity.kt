@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.gmail.sleepybee410.picshelf.Activity.WidgetConfigureActivity.Companion.RESULT_EDIT
 import com.gmail.sleepybee410.picshelf.GlobalUtils
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
@@ -13,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_single_image.*
  * Created by leeseulbee on 2020/11/09.
  */
 class SingleImageActivity : AppCompatActivity() {
+
+    private val REQUEST_EDIT = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +33,19 @@ class SingleImageActivity : AppCompatActivity() {
                 val intent = Intent(this, EditActivity::class.java)
                 intent.putExtra("widgetId", item.widgetId)
                 intent.putExtra("dbIdx", item.idx)
-                startActivity(intent)
+                startActivityForResult(intent, REQUEST_EDIT)
             }
             btn_cancel_single_image.setOnClickListener{
                 finish()
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_EDIT) {
+            setResult(RESULT_EDIT)
+        }
+        finish()
     }
 }

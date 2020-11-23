@@ -4,4 +4,9 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
+    <string name="feedback">Feedback</string>
+    <string name="support_developer">Support Developer</string>
+    <string name="cancel">cancel</string>
+    <string name="finish">finish</string>
+    <string name="leave_app">Leave App?</string>
 </resources>
