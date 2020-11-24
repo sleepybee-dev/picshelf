@@ -1,4 +1,4 @@
-package com.gmail.sleepybee410.picshelf.Activity
+package com.gmail.sleepybee410.picshelf.activity
 
 import android.Manifest
 import android.app.Activity
@@ -10,9 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import android.view.View
 import android.widget.Toast
-import com.gmail.sleepybee410.FinishDialog
 import com.gmail.sleepybee410.picshelf.GlobalUtils
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.WidgetProvider

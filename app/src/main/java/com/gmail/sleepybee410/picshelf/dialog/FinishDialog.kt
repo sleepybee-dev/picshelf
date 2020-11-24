@@ -1,16 +1,10 @@
-package com.gmail.sleepybee410
+package com.gmail.sleepybee410.picshelf.dialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.View
-import com.gmail.sleepybee410.picshelf.Activity.MainActivity
 import com.gmail.sleepybee410.picshelf.R
-import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.android.synthetic.main.dialog_finish.*
 
 /**
@@ -35,7 +29,7 @@ class FinishDialog(context: Context, confirmListener: View.OnClickListener) : Di
             R.id.btn_review_finish -> {
                 launchReviewFlow()
             }
-            R.id.btn_cancel_finish-> {
+            R.id.btn_cancel_finish -> {
                 dismiss()
             }
         }

@@ -11,7 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.FileProvider
-import com.gmail.sleepybee410.picshelf.Activity.EditActivity
+import com.gmail.sleepybee410.picshelf.activity.EditActivity
 import java.io.File
 import java.net.URI
 

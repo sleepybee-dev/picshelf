@@ -1,4 +1,4 @@
-package com.gmail.sleepybee410.picshelf.Activity
+package com.gmail.sleepybee410.picshelf.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gmail.sleepybee410.FinishDialog
+import com.gmail.sleepybee410.picshelf.dialog.FinishDialog
 import com.gmail.sleepybee410.picshelf.adapter.PicListAdapter
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R

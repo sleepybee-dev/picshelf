@@ -1,4 +1,4 @@
-package com.gmail.sleepybee410.picshelf.Activity
+package com.gmail.sleepybee410.picshelf.activity
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
@@ -14,7 +14,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.gmail.sleepybee410.picshelf.*
-import com.gmail.sleepybee410.picshelf.Activity.WidgetConfigureActivity.Companion.RESULT_EDIT
+import com.gmail.sleepybee410.picshelf.activity.WidgetConfigureActivity.Companion.RESULT_EDIT
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 

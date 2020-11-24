@@ -13,8 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.gmail.sleepybee410.picshelf.Activity.EditActivity
-import com.gmail.sleepybee410.picshelf.Activity.MainActivity
+import com.gmail.sleepybee410.picshelf.activity.EditActivity
+import com.gmail.sleepybee410.picshelf.activity.MainActivity
 import com.gmail.sleepybee410.picshelf.GlobalUtils
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
