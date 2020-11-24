@@ -52,9 +52,9 @@
 
     <FrameLayout
             android:layout_marginEnd="60dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/texture_wood"
             android:layout_width="match_parent"
             android:elevation="16dp"
-            android:layout_height="2dp"/>
+            android:layout_height="8dp"/>
 
 </LinearLayout>
