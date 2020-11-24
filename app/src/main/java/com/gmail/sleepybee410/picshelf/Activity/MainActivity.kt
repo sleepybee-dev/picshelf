@@ -9,9 +9,11 @@ import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gmail.sleepybee410.FinishDialog
 import com.gmail.sleepybee410.picshelf.adapter.PicListAdapter
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
@@ -191,4 +193,13 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 //    }
+
+
+    override fun onBackPressed() {
+        val finishDialog = FinishDialog(this,
+            View.OnClickListener {
+                finish()
+            })
+        finishDialog.show()
+    }
 }

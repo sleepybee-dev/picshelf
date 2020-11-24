@@ -10,7 +10,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import com.gmail.sleepybee410.FinishDialog
 import com.gmail.sleepybee410.picshelf.GlobalUtils
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.WidgetProvider
@@ -23,6 +25,7 @@ import kotlinx.android.synthetic.main.pic_shelf_app_widget_configure.*
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 /**
  * The configuration screen for the [WidgetProvider] AppWidget.
@@ -181,4 +184,5 @@ class WidgetConfigureActivity : Activity() {
             }
         }
     }
+
 }
