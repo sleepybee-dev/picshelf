@@ -21,7 +21,7 @@ class SingleImageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_single_image)
 
         val idx = intent.extras!!.get("dbIdx") as Int
-        val item = GlobalUtils.loadByDBIdx(this, idx)
+        val item = GlobalUtils.loadByWidgetId(this, idx)
 
         if(item != null) {
             Glide.with(this).load(item.uri).into(iv_single_image)

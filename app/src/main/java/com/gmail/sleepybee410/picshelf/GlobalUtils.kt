@@ -2,6 +2,7 @@ package com.gmail.sleepybee410.picshelf
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 
 
 object GlobalUtils {
@@ -16,12 +17,13 @@ object GlobalUtils {
     var ITEM_WIDTH : Int = 0
     var ITEM_HEIGHT : Int = 0
 
-    fun loadByDBIdx(context: Context, dbIdx: Int) : PicItem? {
+    fun loadByWidgetId(context: Context, widgetId: Int) : PicItem? {
+        Log.d("SB", "loadByWidgetId : $widgetId")
         val helper = SQLiteHelper(context)
         val db = helper.writableDatabase
-        val result = db.rawQuery("SELECT * FROM PICS_TB WHERE idx='$dbIdx'", null)
-        if(result.moveToFirst()) {
-            return PicItem(
+        val result = db.rawQuery("SELECT * FROM PICS_TB WHERE widgetId= $widgetId", null)
+        return if(result.moveToFirst()) {
+            PicItem(
                 result.getInt(0),
                 result.getString(1),
                 result.getInt(2),
@@ -31,8 +33,7 @@ object GlobalUtils {
                 result.getString(6),
                 result.getString(7)
             )
-        }
-        return null
+        } else null
     }
 
     fun loadAll(context: Context) : ArrayList<PicItem> {

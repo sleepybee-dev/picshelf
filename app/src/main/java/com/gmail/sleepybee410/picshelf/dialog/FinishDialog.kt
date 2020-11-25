@@ -10,8 +10,7 @@ import kotlinx.android.synthetic.main.dialog_finish.*
 /**
  * Created by leeseulbee on 2020/10/28.
  */
-class FinishDialog(context: Context, confirmListener: View.OnClickListener) : Dialog(context), View.OnClickListener {
-    private val confirmListener = confirmListener
+class FinishDialog(context: Context, private val confirmListener: View.OnClickListener) : Dialog(context), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

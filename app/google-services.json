@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "5201827158",
+    "firebase_url": "https://picshelf-38581.firebaseio.com",
+    "project_id": "picshelf-38581",
+    "storage_bucket": "picshelf-38581.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5201827158:android:4d75c188126ada376532f7",
+        "android_client_info": {
+          "package_name": "com.gmail.sleepybee410.picshelf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5201827158-co4lfvvsdlfn50cn7on1q0bh29pbmbru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1TnjPlH_P1vVzauEZXD5zv1SXKOHQMUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5201827158-co4lfvvsdlfn50cn7on1q0bh29pbmbru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

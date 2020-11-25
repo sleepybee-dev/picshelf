@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_edit.*
 import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.gmail.sleepybee410.picshelf.*
@@ -41,11 +42,9 @@ class EditActivity : AppCompatActivity() {
         super.onResume()
 
         widgetId = intent.extras!!.get("widgetId") as Int
-        dbIdx = intent.extras!!.get("dbIdx") as Int?
 
-        Log.i("SB", "========dbIdx : $dbIdx")
-        if (dbIdx != null)
-            resultItem = GlobalUtils.loadByDBIdx(this, dbIdx!!)
+        if (widgetId != null)
+            resultItem = GlobalUtils.loadByWidgetId(this, widgetId!!)
 
         if(resultItem == null) {
             idx = intent.extras.get("idx") as Int
@@ -65,6 +64,12 @@ class EditActivity : AppCompatActivity() {
         Log.i("SB", "originUri : $originUri")
 
         et_label_edit.setText(label)
+        et_label_edit.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
 
         rb_no_frame_edit.isChecked = frame == "no"
         rb_default_edit.isChecked = frame == "default"
