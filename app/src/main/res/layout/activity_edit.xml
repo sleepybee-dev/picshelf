@@ -37,7 +37,7 @@
                     android:layout_margin="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
-                    android:text="No Frame"/>
+                    android:text="@string/no_frame"/>
 
             <RadioButton
                     android:checked="true"
@@ -45,7 +45,7 @@
                     android:layout_margin="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
-                    android:text="Default"/>
+                    android:text="@string/basic_frame"/>
 
             <RadioButton
                     android:checked="false"
@@ -53,7 +53,7 @@
                     android:layout_margin="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
-                    android:text="Polaroid"/>
+                    android:text="@string/polaroid"/>
 <!--        <RadioButton-->
 <!--                android:checked="true"-->
 <!--                android:id="@+id/rb_red_edit"-->

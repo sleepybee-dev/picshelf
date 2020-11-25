@@ -20,7 +20,7 @@ class SingleImageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_image)
 
-        val idx = intent.extras!!.get("dbIdx") as Int
+        val idx = intent.extras!!.get("widgetId") as Int
         val item = GlobalUtils.loadByWidgetId(this, idx)
 
         if(item != null) {
@@ -31,7 +31,6 @@ class SingleImageActivity : AppCompatActivity() {
             btn_select_single_image.setOnClickListener{
                 val intent = Intent(this, EditActivity::class.java)
                 intent.putExtra("widgetId", item.widgetId)
-                intent.putExtra("dbIdx", item.idx)
                 startActivityForResult(intent, REQUEST_EDIT)
             }
             btn_cancel_single_image.setOnClickListener{

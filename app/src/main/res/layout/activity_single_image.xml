@@ -31,14 +31,14 @@
             android:layout_height="wrap_content">
         <Button
                 android:id="@+id/btn_cancel_single_image"
-                android:text="CANCEL"
+                android:text="@string/cancel"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
         <Button
                 android:id="@+id/btn_select_single_image"
-                android:text="SELECT"
+                android:text="@string/select"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:layout_width="0dp"

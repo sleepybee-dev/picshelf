@@ -7,6 +7,12 @@ import android.util.Log
 
 object GlobalUtils {
 
+    fun deleteDataByWidgetId(context: Context, widgetId: Int) {
+        val helper = SQLiteHelper(context)
+        val db = helper.writableDatabase
+        db.execSQL("DELETE FROM PICS_TB WHERE widgetId=$widgetId")
+    }
+
     fun deleteItem(context: Context, originUri:Uri){
         val helper = SQLiteHelper(context)
         val db = helper.writableDatabase

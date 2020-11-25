@@ -74,9 +74,9 @@ class WidgetProvider : AppWidgetProvider() {
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         // When the user deletes the widget, delete the preference associated with it.
-//        for (appWidgetId in appWidgetIds) {
-//            PicShelfAppWidgetConfigureActivity.deleteTitlePref(context, appWidgetId)
-//        }
+        for (appWidgetId in appWidgetIds) {
+            GlobalUtils.deleteDataByWidgetId(context, appWidgetId)
+        }
     }
 
     override fun onEnabled(context: Context) {

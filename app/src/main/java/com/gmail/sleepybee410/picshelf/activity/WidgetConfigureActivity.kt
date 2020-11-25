@@ -58,6 +58,13 @@ class WidgetConfigureActivity : Activity() {
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
                 Toast.makeText(context, "Permission Granted", Toast.LENGTH_LONG).show()
+                var intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.addCategory(Intent.CATEGORY_OPENABLE)
+                intent.type = "image/jpg"
+                startActivityForResult(
+                    Intent.createChooser(intent, "SELECT PIC"),
+                    REQUEST_SELECT
+                )
             }
 
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
@@ -78,19 +85,19 @@ class WidgetConfigureActivity : Activity() {
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
 
-        val gridItems : ArrayList<PicItem> = GlobalUtils.loadAll(this)
-        gv_history_configure.numColumns = 3
-        gv_history_configure.adapter = HistoryGridAdapter(this, gridItems)
+//        val gridItems : ArrayList<PicItem> = GlobalUtils.loadAll(this)
+//        gv_history_configure.numColumns = 3
+//        gv_history_configure.adapter = HistoryGridAdapter(this, gridItems)
 
-        btn_load_configure.setOnClickListener {
-            var intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.addCategory(Intent.CATEGORY_OPENABLE)
-            intent.type = "image/jpg"
-            startActivityForResult(
-                Intent.createChooser(intent, "SELECT PIC"),
-                REQUEST_SELECT
-            )
-        }
+//        btn_load_configure.setOnClickListener {
+//            var intent = Intent(Intent.ACTION_GET_CONTENT)
+//            intent.addCategory(Intent.CATEGORY_OPENABLE)
+//            intent.type = "image/jpg"
+//            startActivityForResult(
+//                Intent.createChooser(intent, "SELECT PIC"),
+//                REQUEST_SELECT
+//            )
+//        }
 
     }
 
@@ -117,6 +124,10 @@ class WidgetConfigureActivity : Activity() {
 
                             var option = UCrop.Options()
                             option.setCompressionFormat(Bitmap.CompressFormat.JPEG)
+                            option.useSourceImageAspectRatio()
+                            option.setToolbarColor(getColor(R.color.colorPrimary))
+                            option.setStatusBarColor(getColor(R.color.colorPrimary))
+                            option.setActiveWidgetColor(getColor(R.color.colorAccent))
 
                             UCrop.of(data.data!!, Uri.fromFile(File(destUri, srcName)))
                                 .withOptions(option)

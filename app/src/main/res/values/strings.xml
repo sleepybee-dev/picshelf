@@ -10,4 +10,8 @@
     <string name="confirm">Confirm</string>
     <string name="finish">Finish</string>
     <string name="leave_app">Leave App?</string>
+    <string name="no_frame">No Frame</string>
+    <string name="polaroid">Polaroid</string>
+    <string name="basic_frame">Default</string>
+    <string name="select">SELECT</string>
 </resources>
