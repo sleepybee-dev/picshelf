@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_edit.*
@@ -36,6 +38,7 @@ class EditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
+        setSupportActionBar(toolbar_edit)
     }
 
     override fun onResume() {
@@ -61,7 +64,7 @@ class EditActivity : AppCompatActivity() {
             frame = resultItem!!.frame
         }
 
-        Log.i("SB", "originUri : $originUri")
+        tv_uri_edit.text = uri.toString()
 
         et_label_edit.setText(label)
         et_label_edit.setOnEditorActionListener { v, actionId, event ->
@@ -91,14 +94,18 @@ class EditActivity : AppCompatActivity() {
             when (checkedId) {
                 R.id.rb_no_frame_edit -> {
                     frame = "no"
+                    tv_frame_edit.visibility = View.GONE
                     fl_frame_edit.setPadding(0,0,0,0)
                 }
                 R.id.rb_default_edit -> {
                     frame = "default"
+                    tv_frame_edit.visibility = View.GONE
                     fl_frame_edit.setPadding(16, 16, 16, 16)
                 }
                 R.id.rb_polaroid_edit -> {
                     frame = "polaroid"
+                    tv_frame_edit.visibility = View.VISIBLE
+                    tv_frame_edit.text = et_label_edit.text
                     fl_frame_edit.setPadding(16, 16, 16, 80)
                 }
             }
@@ -113,13 +120,25 @@ class EditActivity : AppCompatActivity() {
             mgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         })
 
-        et_label_edit.setOnKeyListener { v, keyCode, event -> //Enter key Action
+            et_label_edit.setOnKeyListener { v, keyCode, event -> //Enter key Action
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 mgr.hideSoftInputFromWindow(v.rootView.windowToken, 0)
                 saveCropPic(v)
                 true
             } else false
         }
+
+        et_label_edit.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                tv_frame_edit.text = s.toString()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
 
         btn_confirm_edit.setOnClickListener { view ->
             if (et_label_edit.text.isEmpty()){

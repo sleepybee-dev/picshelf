@@ -3,6 +3,7 @@ package com.gmail.sleepybee410.picshelf
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import java.io.File
 
 
 object GlobalUtils {
@@ -10,7 +11,18 @@ object GlobalUtils {
     fun deleteDataByWidgetId(context: Context, widgetId: Int) {
         val helper = SQLiteHelper(context)
         val db = helper.writableDatabase
-        db.execSQL("DELETE FROM PICS_TB WHERE widgetId=$widgetId")
+        val picItem = loadByWidgetId(context, widgetId)
+        if (picItem != null) {
+            db.execSQL("DELETE FROM PICS_TB WHERE widgetId=$widgetId")
+            deleteFile(picItem.originUri)
+        }
+    }
+
+    private fun deleteFile(path: Uri) {
+        val file = File(path.toString())
+        if(file.exists()) {
+            file.delete()
+        }
     }
 
     fun deleteItem(context: Context, originUri:Uri){

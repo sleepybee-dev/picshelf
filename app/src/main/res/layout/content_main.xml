@@ -12,7 +12,7 @@
 
     <TextView
             android:layout_margin="12dp"
-            android:text="HISTORY"
+            android:text="@string/my_shelf"
             android:textSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -22,4 +22,24 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
+    <TextView
+            android:id="@+id/tv_no_history_main"
+            android:layout_margin="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+        android:layout_weight="1"
+            android:visibility="gone"
+            android:gravity="center"
+            android:text="@string/no_history"/>
+
+    <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/av_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-8159193305024294/3342006721">
+    </com.google.android.gms.ads.AdView>
 </LinearLayout>

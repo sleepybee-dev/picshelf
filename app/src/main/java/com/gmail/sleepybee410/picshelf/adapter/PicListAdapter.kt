@@ -46,32 +46,29 @@ class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAd
         val into = Glide.with(context)
             .load(list[position].uri)
             .into(holder.picView)
-        holder.btnDelete.setOnClickListener {
-            var builder : AlertDialog.Builder = AlertDialog.Builder(context)
-            var options : Array<String> = arrayOf("삭제")
-
-            builder.setItems(options, DialogInterface.OnClickListener { dialog, which ->
-                when(which){
-                    0->{
-                        GlobalUtils.deleteItem(context, list[position].originUri)
-                        list.remove(list[position])
-                    }
-                    else->Toast.makeText(context, options[which], Toast.LENGTH_SHORT).show()
-                }
-                dialog.dismiss()
-
-            })
-            builder.setOnDismissListener {
-                notifyDataSetChanged()
-            }
-            var dialog : AlertDialog = builder.create()
-            dialog.show()
-
-            true
-        }
-
-
-
+//        holder.btnDelete.setOnClickListener {
+//            var builder : AlertDialog.Builder = AlertDialog.Builder(context)
+//            var options : Array<String> = arrayOf("삭제")
+//
+//            builder.setItems(options, DialogInterface.OnClickListener { dialog, which ->
+//                when(which){
+//                    0->{
+//                        GlobalUtils.deleteItem(context, list[position].originUri)
+//                        list.remove(list[position])
+//                    }
+//                    else->Toast.makeText(context, options[which], Toast.LENGTH_SHORT).show()
+//                }
+//                dialog.dismiss()
+//
+//            })
+//            builder.setOnDismissListener {
+//                notifyDataSetChanged()
+//            }
+//            var dialog : AlertDialog = builder.create()
+//            dialog.show()
+//
+//            true
+//        }
 
     }
 
@@ -91,7 +88,7 @@ class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAd
         var label = view.findViewById(R.id.tv_label_item) as TextView
         var date = view.findViewById(R.id.tv_date_item) as TextView
         var picView  = view.findViewById(R.id.iv_item) as ImageView
-        var btnDelete = view.findViewById(R.id.btn_delete_item) as ImageButton
+//        var btnDelete = view.findViewById(R.id.btn_delete_item) as ImageButton
 
     }
 

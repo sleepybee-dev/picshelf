@@ -18,7 +18,10 @@ import com.gmail.sleepybee410.picshelf.adapter.PicListAdapter
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
 import com.gmail.sleepybee410.picshelf.SQLiteHelper
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.yalantis.ucrop.UCrop
+import kotlinx.android.synthetic.main.activity_main.*
 
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.File
@@ -36,16 +39,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar_main)
 
-        //화면비율가져오기
-        getItemSize()
-        initList()
 
+        MobileAds.initialize(this) {}
+
+        val adRequest = AdRequest.Builder().build()
+        av_main.loadAd(adRequest)
     }
 
-    private fun getItemSize() {
-
+    override fun onResume() {
+        super.onResume()
+        initList()
     }
 
     private fun initList() {
@@ -57,6 +62,8 @@ class MainActivity : AppCompatActivity() {
         rv_main.layoutManager = mLayoutManager
         rv_main.adapter = adapterPic
 
+        rv_main.visibility = if(list.isEmpty()) View.GONE else View.VISIBLE
+        tv_no_history_main.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun loadData(): ArrayList<PicItem> {
@@ -160,21 +167,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        menuInflater.inflate(R.menu.menu_main, menu)
+//        return true
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        return when (item.itemId) {
+//            R.id.action_settings -> true
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
 //    override fun onBackPressed() {
 ////        val manager = ReviewManagerFactory.create(this)

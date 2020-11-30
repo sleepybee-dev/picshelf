@@ -14,4 +14,11 @@
     <string name="polaroid">Polaroid</string>
     <string name="basic_frame">Default</string>
     <string name="select">SELECT</string>
+    <string name="my_shelf">My Shelf</string>
+    <string name="no_history">No Widgets.\nYou can add a Picshelf widget to your phone\'s home screen.\nTouch and hold an empty area on your home screen</string>
+    <string name="msg_permission">Storage Permission Required</string>
+    <string name="msg_permission_denied">You can reset permissions at [Settings]-[Application]</string>
+    <string name="edit_picture">Edit Picture</string>
+    <string name="load_new_picture">LOAD NEW PICTURE</string>
+    <string name="edit_frame">Edit Frame</string>
 </resources>

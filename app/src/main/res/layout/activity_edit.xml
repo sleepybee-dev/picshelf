@@ -8,6 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_edit"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="240dp">
     <FrameLayout
             android:id="@+id/fl_frame_edit"
             android:background="@android:color/white"
@@ -20,9 +39,27 @@
             android:layout_height="200dp"
             app:layout_constraintTop_toTopOf="parent"/>
     </FrameLayout>
+        <TextView
+                android:id="@+id/tv_frame_edit"
+                android:layout_alignStart="@+id/fl_frame_edit"
+                android:layout_alignEnd="@+id/fl_frame_edit"
+                android:layout_alignBottom="@+id/fl_frame_edit"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+    </RelativeLayout>
 
+    <TextView
+            android:id="@+id/tv_uri_edit"
+            android:textSize="14sp"
+            android:layout_margin="12dp"
+            android:textColor="@android:color/darker_gray"
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     <RadioGroup
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/box_round_white"
             android:id="@+id/rg_frame_edit"
             android:gravity="center"
@@ -34,7 +71,7 @@
             <RadioButton
                     android:checked="false"
                     android:id="@+id/rb_no_frame_edit"
-                    android:layout_margin="16dp"
+                    android:layout_margin="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
                     android:text="@string/no_frame"/>
@@ -42,7 +79,7 @@
             <RadioButton
                     android:checked="true"
                     android:id="@+id/rb_default_edit"
-                    android:layout_margin="16dp"
+                    android:layout_margin="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
                     android:text="@string/basic_frame"/>
@@ -50,7 +87,7 @@
             <RadioButton
                     android:checked="false"
                     android:id="@+id/rb_polaroid_edit"
-                    android:layout_margin="16dp"
+                    android:layout_margin="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
                     android:text="@string/polaroid"/>
@@ -82,10 +119,10 @@
             android:id="@+id/et_label_edit"
             android:layout_margin="16dp"
             android:maxLines="1"
-            android:maxLength="30"
+            android:maxLength="14"
             android:imeOptions="actionGo"
-            android:layout_width="match_parent" android:layout_height="64dp"
-            android:hint="INPUT PICTURE LABEL"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
     />
 
     <Button
@@ -95,6 +132,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="CONFIRM"/>
+            android:text="@string/confirm"
+            android:textColor="@android:color/white"/>
 
 </LinearLayout>

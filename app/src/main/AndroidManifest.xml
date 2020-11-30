@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.gmail.sleepybee410.picshelf">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -31,7 +32,7 @@
         <activity
                 android:name="com.gmail.sleepybee410.picshelf.activity.EditActivity"
                 android:screenOrientation="portrait"
-                android:label="EDIT"/>
+                android:label="@string/edit_frame"/>
 
         <receiver android:name="com.gmail.sleepybee410.picshelf.WidgetProvider">
             <intent-filter>
@@ -67,6 +68,10 @@
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/file_path"/>
         </provider>
+
+        <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-8159193305024294~9713819865"/>
 
     </application>
 

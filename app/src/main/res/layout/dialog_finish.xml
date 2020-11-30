@@ -5,26 +5,28 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:background="@drawable/box_round_white"
         android:orientation="vertical">
 
     <TextView
             android:text="@string/leave_app"
+            android:layout_margin="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    <TextView
-            android:text="ddfasdfasdf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    <Button
-            android:id="@+id/btn_support_finish"
-            android:text="@string/support_developer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <Button
-            android:id="@+id/btn_review_finish"
-            android:text="@string/feedback"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+<!--    <TextView-->
+<!--            android:text="ddfasdfasdf"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--    <Button-->
+<!--            android:id="@+id/btn_support_finish"-->
+<!--            android:text="@string/support_developer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--    <Button-->
+<!--            android:id="@+id/btn_review_finish"-->
+<!--            android:text="@string/feedback"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -35,14 +37,16 @@
                 android:background="@drawable/box_border_round_grey"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"/>
         <Button
                 android:id="@+id/btn_confirm_finish"
                 android:text="@string/finish"
                 android:background="@drawable/box_border_round_accent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"/>
 
     </LinearLayout>
 

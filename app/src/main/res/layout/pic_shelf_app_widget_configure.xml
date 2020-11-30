@@ -5,22 +5,16 @@
               android:orientation="vertical"
               android:padding="16dp">
 
+<!--    <GridView-->
+<!--            android:id="@+id/gv_history_configure"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="300dp"/>-->
+
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="HISTORY"
-            android:layout_marginBottom="8dp"/>
-
-    <GridView
-            android:id="@+id/gv_history_configure"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
-
-    <Button
             android:id="@+id/btn_load_configure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LOAD NEW PICTURE"
-            android:layout_marginTop="8dp"/>
+            android:text="@string/load_new_picture"
+            android:layout_margin="80dp"/>
 
 </LinearLayout>

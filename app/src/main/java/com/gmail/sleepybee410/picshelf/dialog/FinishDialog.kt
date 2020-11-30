@@ -18,16 +18,16 @@ class FinishDialog(context: Context, private val confirmListener: View.OnClickLi
 
         setCanceledOnTouchOutside(false)
 
-        btn_review_finish.setOnClickListener(this)
+//        btn_review_finish.setOnClickListener(this)
         btn_cancel_finish.setOnClickListener(this)
         btn_confirm_finish.setOnClickListener(confirmListener)
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.btn_review_finish -> {
-                launchReviewFlow()
-            }
+//            R.id.btn_review_finish -> {
+//                launchReviewFlow()
+//            }
             R.id.btn_cancel_finish -> {
                 dismiss()
             }

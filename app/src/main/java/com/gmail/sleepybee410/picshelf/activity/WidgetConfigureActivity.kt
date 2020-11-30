@@ -78,8 +78,8 @@ class WidgetConfigureActivity : Activity() {
 
         TedPermission.with(this)
             .setPermissionListener(permissionListener)
-            .setRationaleMessage("저장소 접근 권한 필요")
-            .setDeniedMessage("[설정]-[권한]에서 허용 가능")
+            .setRationaleMessage(getString(R.string.msg_permission))
+            .setDeniedMessage(getString(R.string.msg_permission_denied))
 //                .setPermissions(Manifest.permission_group.STORAGE)
             .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -125,6 +125,7 @@ class WidgetConfigureActivity : Activity() {
                             var option = UCrop.Options()
                             option.setCompressionFormat(Bitmap.CompressFormat.JPEG)
                             option.useSourceImageAspectRatio()
+                            option.setToolbarTitle(getString(R.string.edit_picture))
                             option.setToolbarColor(getColor(R.color.colorPrimary))
                             option.setStatusBarColor(getColor(R.color.colorPrimary))
                             option.setActiveWidgetColor(getColor(R.color.colorAccent))
