@@ -14,14 +14,19 @@ object GlobalUtils {
         val picItem = loadByWidgetId(context, widgetId)
         if (picItem != null) {
             db.execSQL("DELETE FROM PICS_TB WHERE widgetId=$widgetId")
-            deleteFile(picItem.originUri)
+            deleteFile(picItem.uri)
         }
     }
 
     private fun deleteFile(path: Uri) {
-        val file = File(path.toString())
+        val file = File(path.path)
         if(file.exists()) {
-            file.delete()
+            if(file.delete()) {
+                Log.d("SB", "===============file deleted")
+            }
+        } else {
+
+            Log.d("SB", "===============file not exists")
         }
     }
 

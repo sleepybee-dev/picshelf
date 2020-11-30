@@ -64,9 +64,13 @@ class EditActivity : AppCompatActivity() {
             frame = resultItem!!.frame
         }
 
-        tv_uri_edit.text = uri.toString()
+        val splitUri = uri.toString().split("/")
+        val uriLength = splitUri.size
+        tv_uri_edit.text =
+            "/${splitUri[uriLength - 3]}/${splitUri[uriLength - 2]}/${splitUri.last()}"
 
         et_label_edit.setText(label)
+        et_label_edit.setSelection(label.length)
         et_label_edit.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 return@setOnEditorActionListener true
@@ -81,12 +85,15 @@ class EditActivity : AppCompatActivity() {
         when (frame) {
             "no" -> {
                 fl_frame_edit.setPadding(0,0,0,0)
+                tv_frame_edit.visibility = View.GONE
             }
             "default" -> {
                 fl_frame_edit.setPadding(16, 16, 16, 16)
+                tv_frame_edit.visibility = View.GONE
             }
             "polaroid" -> {
                 fl_frame_edit.setPadding(16, 16, 16, 80)
+                tv_frame_edit.visibility = View.VISIBLE
             }
         }
 
