@@ -3,7 +3,7 @@
     <string name="action_settings">설정</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
-    <string name="add_widget">Add widget</string>
+    <string name="add_widget">위젯 만들기</string>
     <string name="feedback">피드백 남기기</string>
     <string name="support_developer">Support Developer</string>
     <string name="cancel">취소</string>

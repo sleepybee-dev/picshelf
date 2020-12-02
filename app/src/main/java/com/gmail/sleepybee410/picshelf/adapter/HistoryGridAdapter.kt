@@ -10,8 +10,8 @@ import com.bumptech.glide.Glide
 import com.gmail.sleepybee410.picshelf.activity.SingleImageActivity
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
-import com.gmail.sleepybee410.picshelf.activity.WidgetConfigureActivity
-import com.gmail.sleepybee410.picshelf.activity.WidgetConfigureActivity.Companion.RESULT_EDIT
+import com.gmail.sleepybee410.picshelf.activity.AddActivity
+import com.gmail.sleepybee410.picshelf.activity.AddActivity.Companion.RESULT_EDIT
 
 /**
  * Created by leeseulbee on 2020/11/09.
@@ -49,7 +49,7 @@ class HistoryGridAdapter (private var context : Context, private var list: Array
         holder.picView.setOnClickListener {
             val intent = Intent(context, SingleImageActivity::class.java)
             intent.putExtra("widgetId", list[position].widgetId)
-            (context as WidgetConfigureActivity).startActivityForResult(intent, RESULT_EDIT)
+            (context as AddActivity).startActivityForResult(intent, RESULT_EDIT)
         }
 
         return convertView

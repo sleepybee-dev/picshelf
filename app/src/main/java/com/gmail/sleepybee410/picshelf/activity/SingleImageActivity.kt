@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.gmail.sleepybee410.picshelf.activity.WidgetConfigureActivity.Companion.RESULT_EDIT
+import com.gmail.sleepybee410.picshelf.activity.AddActivity.Companion.RESULT_EDIT
 import com.gmail.sleepybee410.picshelf.GlobalUtils
 import com.gmail.sleepybee410.picshelf.R
 import kotlinx.android.synthetic.main.activity_single_image.*

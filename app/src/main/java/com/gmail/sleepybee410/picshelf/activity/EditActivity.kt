@@ -17,7 +17,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.gmail.sleepybee410.picshelf.*
-import com.gmail.sleepybee410.picshelf.activity.WidgetConfigureActivity.Companion.RESULT_EDIT
+import com.gmail.sleepybee410.picshelf.activity.AddActivity.Companion.RESULT_EDIT
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 

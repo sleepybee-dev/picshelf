@@ -11,26 +11,22 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
-import com.gmail.sleepybee410.picshelf.GlobalUtils
-import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.WidgetProvider
 import com.gmail.sleepybee410.picshelf.R
-import com.gmail.sleepybee410.picshelf.adapter.HistoryGridAdapter
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yalantis.ucrop.UCrop
-import kotlinx.android.synthetic.main.pic_shelf_app_widget_configure.*
+import kotlinx.android.synthetic.main.activity_add.*
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 /**
  * The configuration screen for the [WidgetProvider] AppWidget.
  */
-class WidgetConfigureActivity : Activity() {
+class AddActivity : Activity() {
 
-    private var context: Context = this@WidgetConfigureActivity;
+    private var context: Context = this@AddActivity;
     var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
     private var originUri: Uri? = null
@@ -53,12 +49,13 @@ class WidgetConfigureActivity : Activity() {
         // Set the result to CANCELED.  This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED)
-        setContentView(R.layout.pic_shelf_app_widget_configure)
+        setContentView(R.layout.activity_add)
+        setActionBar(toolbar_add)
 
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
-                Toast.makeText(context, "Permission Granted", Toast.LENGTH_LONG).show()
-                var intent = Intent(Intent.ACTION_GET_CONTENT)
+//                Toast.makeText(context, "Permission Granted", Toast.LENGTH_LONG).show()
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)
                 intent.type = "image/jpg"
                 startActivityForResult(
@@ -68,11 +65,7 @@ class WidgetConfigureActivity : Activity() {
             }
 
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-                Toast.makeText(
-                    context,
-                    "Permission Denied : " + deniedPermissions.toString(),
-                    Toast.LENGTH_LONG
-                ).show()
+                finish()
             }
         }
 
@@ -133,6 +126,8 @@ class WidgetConfigureActivity : Activity() {
                             UCrop.of(data.data!!, Uri.fromFile(File(destUri, srcName)))
                                 .withOptions(option)
                                 .start(this)
+                        } else {
+                            finish()
                         }
                     }
                     UCrop.REQUEST_CROP -> {

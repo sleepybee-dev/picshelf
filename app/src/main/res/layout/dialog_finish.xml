@@ -10,6 +10,7 @@
         android:orientation="vertical">
 
     <TextView
+            android:id="@+id/tv_dialog"
             android:text="@string/leave_app"
             android:layout_margin="20dp"
             android:layout_width="wrap_content"
