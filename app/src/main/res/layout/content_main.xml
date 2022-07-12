@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -44,3 +45,4 @@
             ads:adUnitId="ca-app-pub-8159193305024294/3342006721">
     </com.google.android.gms.ads.AdView>
 </LinearLayout>
+</layout>

@@ -14,7 +14,9 @@ object GlobalUtils {
         val picItem = loadByWidgetId(context, widgetId)
         if (picItem != null) {
             db.execSQL("DELETE FROM PICS_TB WHERE widgetId=$widgetId")
-            deleteFile(picItem.uri)
+            if (picItem.uri != null) {
+                deleteFile(picItem.uri!!)
+            }
         }
     }
 

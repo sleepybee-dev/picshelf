@@ -10,19 +10,22 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_edit.*
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.gmail.sleepybee410.picshelf.*
 import com.gmail.sleepybee410.picshelf.activity.AddActivity.Companion.RESULT_EDIT
+import com.gmail.sleepybee410.picshelf.databinding.ActivityEditBinding
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 
 
 class EditActivity : AppCompatActivity() {
+
+    lateinit var binding : ActivityEditBinding
 
     var resultItem : PicItem? = null
     var idx : Int = 0
@@ -36,9 +39,9 @@ class EditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit);
 
-        setSupportActionBar(toolbar_edit)
+        setSupportActionBar(binding.toolbarEdit)
     }
 
     override fun onResume() {
@@ -50,11 +53,11 @@ class EditActivity : AppCompatActivity() {
             resultItem = GlobalUtils.loadByWidgetId(this, widgetId!!)
 
         if(resultItem == null) {
-            idx = intent.extras.get("idx") as Int
-            uri = intent.extras.get("uri") as Uri
-            originUri = intent.extras.get("originUri") as Uri
-            label = intent.extras.get("label") as String
-            color = intent.extras.get("color") as String
+            idx = intent.extras!!.get("idx") as Int
+            uri = intent.extras!!.get("uri") as Uri
+            originUri = intent.extras!!.get("originUri") as Uri
+            label = intent.extras!!.get("label") as String
+            color = intent.extras!!.get("color") as String
         } else {
             idx = resultItem!!.idx
             uri = resultItem!!.uri
@@ -66,68 +69,69 @@ class EditActivity : AppCompatActivity() {
 
         val splitUri = uri.toString().split("/")
         val uriLength = splitUri.size
-        tv_uri_edit.text =
+        binding.tvUriEdit.text =
             "/${splitUri[uriLength - 3]}/${splitUri[uriLength - 2]}/${splitUri.last()}"
 
-        et_label_edit.setText(label)
-        et_label_edit.setSelection(label.length)
-        et_label_edit.setOnEditorActionListener { v, actionId, event ->
+        binding.etLabelEdit
+            .setText(label)
+        binding.etLabelEdit.setSelection(label.length)
+        binding.etLabelEdit.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
         }
 
-        rb_no_frame_edit.isChecked = frame == "no"
-        rb_default_edit.isChecked = frame == "default"
-        rb_polaroid_edit.isChecked = frame == "polaroid"
+        binding.rbNoFrameEdit.isChecked = frame == "no"
+        binding.rbDefaultEdit.isChecked = frame == "default"
+        binding.rbPolaroidEdit.isChecked = frame == "polaroid"
 
         when (frame) {
             "no" -> {
-                fl_frame_edit.setPadding(0,0,0,0)
-                tv_frame_edit.visibility = View.GONE
+                binding.flFrameEdit.setPadding(0,0,0,0)
+                binding.tvFrameEdit.visibility = View.GONE
             }
             "default" -> {
-                fl_frame_edit.setPadding(16, 16, 16, 16)
-                tv_frame_edit.visibility = View.GONE
+                binding.flFrameEdit.setPadding(16, 16, 16, 16)
+                binding.tvFrameEdit.visibility = View.GONE
             }
             "polaroid" -> {
-                fl_frame_edit.setPadding(16, 16, 16, 80)
-                tv_frame_edit.visibility = View.VISIBLE
+                binding.flFrameEdit.setPadding(16, 16, 16, 80)
+                binding.tvFrameEdit.visibility = View.VISIBLE
             }
         }
 
-        rg_frame_edit.setOnCheckedChangeListener { group, checkedId ->
+        binding.rgFrameEdit.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.rb_no_frame_edit -> {
                     frame = "no"
-                    tv_frame_edit.visibility = View.GONE
-                    fl_frame_edit.setPadding(0,0,0,0)
+                    binding.tvFrameEdit.visibility = View.GONE
+                    binding.flFrameEdit.setPadding(0,0,0,0)
                 }
                 R.id.rb_default_edit -> {
                     frame = "default"
-                    tv_frame_edit.visibility = View.GONE
-                    fl_frame_edit.setPadding(16, 16, 16, 16)
+                    binding.tvFrameEdit.visibility = View.GONE
+                    binding.flFrameEdit.setPadding(16, 16, 16, 16)
                 }
                 R.id.rb_polaroid_edit -> {
                     frame = "polaroid"
-                    tv_frame_edit.visibility = View.VISIBLE
-                    tv_frame_edit.text = et_label_edit.text
-                    fl_frame_edit.setPadding(16, 16, 16, 80)
+                    binding.tvFrameEdit.visibility = View.VISIBLE
+                    binding.tvFrameEdit.text = binding.etLabelEdit.text
+                    binding.flFrameEdit.setPadding(16, 16, 16, 80)
                 }
             }
         }
 
         val mgr = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        et_label_edit.post(Runnable {
-            et_label_edit.isFocusableInTouchMode = true
-            et_label_edit.requestFocus()
+        binding.etLabelEdit.post(Runnable {
+            binding.etLabelEdit.isFocusableInTouchMode = true
+            binding.etLabelEdit.requestFocus()
 
             mgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         })
 
-            et_label_edit.setOnKeyListener { v, keyCode, event -> //Enter key Action
+        binding.etLabelEdit.setOnKeyListener { v, keyCode, event -> //Enter key Action
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 mgr.hideSoftInputFromWindow(v.rootView.windowToken, 0)
                 saveCropPic(v)
@@ -135,20 +139,20 @@ class EditActivity : AppCompatActivity() {
             } else false
         }
 
-        et_label_edit.addTextChangedListener(object: TextWatcher{
+        binding.etLabelEdit.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                tv_frame_edit.text = s.toString()
+                binding.tvFrameEdit.text = s.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
         })
 
-        btn_confirm_edit.setOnClickListener { view ->
-            if (et_label_edit.text.isEmpty()){
+        binding.btnConfirmEdit.setOnClickListener { view ->
+            if (binding.etLabelEdit.text.isEmpty()){
                 Snackbar.make(view, "Please Input Label", Snackbar.LENGTH_LONG).show();
             } else {
                 saveCropPic(view);
@@ -160,7 +164,7 @@ class EditActivity : AppCompatActivity() {
 
             Glide.with(this)
                 .load(uri)
-                .into(iv_edit)
+                .into(binding.ivEdit)
         }
     }
 
@@ -173,11 +177,11 @@ class EditActivity : AppCompatActivity() {
     private fun saveCropPic(view : View) {
         val today = LocalDateTime.now().toString()
 
-        label = et_label_edit.text.toString()
+        label = binding.etLabelEdit.text.toString()
 
         Snackbar.make(view, "SAVE", Snackbar.LENGTH_SHORT).show()
         var intent = Intent()
-        resultItem = PicItem(idx, today, widgetId, originUri, uri, label, et_label_edit.text.toString(), frame)
+        resultItem = PicItem(idx, today, widgetId, originUri, uri, label, binding.etLabelEdit.text.toString(), frame)
 //        intent.putExtra("item", item!!)
         val helper = SQLiteHelper(this)
         val db = helper.writableDatabase

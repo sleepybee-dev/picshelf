@@ -11,12 +11,13 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.gmail.sleepybee410.picshelf.WidgetProvider
 import com.gmail.sleepybee410.picshelf.R
+import com.gmail.sleepybee410.picshelf.databinding.ActivityAddBinding
 import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
+import com.gun0912.tedpermission.normal.TedPermission
 import com.yalantis.ucrop.UCrop
-import kotlinx.android.synthetic.main.activity_add.*
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -26,7 +27,7 @@ import java.time.format.DateTimeFormatter
  */
 class AddActivity : Activity() {
 
-    private var context: Context = this@AddActivity;
+    private lateinit var binding : ActivityAddBinding
     var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
     private var originUri: Uri? = null
@@ -46,11 +47,10 @@ class AddActivity : Activity() {
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
 
-        // Set the result to CANCELED.  This will cause the widget host to cancel
-        // out of the widget placement if the user presses the back button.
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add);
+        setActionBar(binding.toolbarAdd)
+
         setResult(RESULT_CANCELED)
-        setContentView(R.layout.activity_add)
-        setActionBar(toolbar_add)
 
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
@@ -69,7 +69,7 @@ class AddActivity : Activity() {
             }
         }
 
-        TedPermission.with(this)
+        TedPermission.create()
             .setPermissionListener(permissionListener)
             .setRationaleMessage(getString(R.string.msg_permission))
             .setDeniedMessage(getString(R.string.msg_permission_denied))
@@ -177,8 +177,8 @@ class AddActivity : Activity() {
 //                initList()
 
                 // It is the responsibility of the configuration activity to update the app widget
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                WidgetProvider.updateAppWidget(context, appWidgetManager, appWidgetId)
+                val appWidgetManager = AppWidgetManager.getInstance(this@AddActivity)
+                WidgetProvider.updateAppWidget(this@AddActivity, appWidgetManager, appWidgetId)
 
                 //            PicShelfAppWidget.Companion.updateAppWidget$app(context, appWidgetManager, mAppWidgetId);
 

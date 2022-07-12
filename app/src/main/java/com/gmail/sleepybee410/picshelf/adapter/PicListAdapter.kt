@@ -42,7 +42,9 @@ class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAd
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.label.text = list[position].label
-        holder.date.text = list[position].createDate.substring(0, 10)
+        if (list[position].createDate != null) {
+            holder.date.text = list[position].createDate!!.substring(0, 10)
+        }
         val into = Glide.with(context)
             .load(list[position].uri)
             .into(holder.picView)

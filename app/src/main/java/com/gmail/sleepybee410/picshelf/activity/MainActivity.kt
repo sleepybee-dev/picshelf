@@ -10,24 +10,25 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.sleepybee410.picshelf.ConfirmDialog
 import com.gmail.sleepybee410.picshelf.adapter.PicListAdapter
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
 import com.gmail.sleepybee410.picshelf.SQLiteHelper
+import com.gmail.sleepybee410.picshelf.databinding.ActivityMainBinding
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.yalantis.ucrop.UCrop
-import kotlinx.android.synthetic.main.activity_main.*
-
-import kotlinx.android.synthetic.main.content_main.*
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding : ActivityMainBinding
 
     companion object {
         const val REQUEST_SELECT = 100
@@ -36,14 +37,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar_main)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setSupportActionBar(binding.toolbarMain)
 
 
         MobileAds.initialize(this) {}
 
         val adRequest = AdRequest.Builder().build()
-        av_main.loadAd(adRequest)
+//        binding.includeMain.avMain.loadAd(adRequest)
     }
 
     override fun onResume() {
@@ -57,11 +59,11 @@ class MainActivity : AppCompatActivity() {
         var adapterPic : PicListAdapter = PicListAdapter(list)
 
         var mLayoutManager = LinearLayoutManager(this)
-        rv_main.layoutManager = mLayoutManager
-        rv_main.adapter = adapterPic
+        binding.includeMain.rvMain.layoutManager = mLayoutManager
+        binding.includeMain.rvMain.adapter = adapterPic
 
-        rv_main.visibility = if(list.isEmpty()) View.GONE else View.VISIBLE
-        tv_no_history_main.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
+        binding.includeMain.rvMain.visibility = if(list.isEmpty()) View.GONE else View.VISIBLE
+        binding.includeMain.tvNoHistoryMain.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun loadData(): ArrayList<PicItem> {

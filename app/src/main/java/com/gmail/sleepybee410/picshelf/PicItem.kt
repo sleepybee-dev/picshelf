@@ -6,13 +6,13 @@ import android.os.Parcelable
 
 data class PicItem(
     var idx : Int,
-    var createDate : String,
+    var createDate : String?,
     var widgetId : Int,
-    var originUri: Uri,
-    var uri: Uri,
-    var label: String,
-    var color: String,
-    var frame: String
+    var originUri: Uri?,
+    var uri: Uri?,
+    var label: String?,
+    var color: String?,
+    var frame: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),

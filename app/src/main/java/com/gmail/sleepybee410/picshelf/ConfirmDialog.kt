@@ -3,23 +3,31 @@ package com.gmail.sleepybee410.picshelf
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import kotlinx.android.synthetic.main.dialog_finish.*
+import androidx.databinding.DataBindingUtil
+import com.gmail.sleepybee410.picshelf.databinding.DialogFinishBinding
+
 
 /**
  * Created by leeseulbee on 2020/10/28.
  */
 class ConfirmDialog(context: Context, private val confirmListener: View.OnClickListener) : Dialog(context), View.OnClickListener {
-
+    private lateinit var binding : DialogFinishBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_finish)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(
+                context
+            ), R.layout.dialog_finish, null, false
+        )
+        setContentView(binding.getRoot())
 
         setCanceledOnTouchOutside(false)
 
 //        btn_review_finish.setOnClickListener(this)
-        btn_cancel_finish.setOnClickListener(this)
-        btn_confirm_finish.setOnClickListener(confirmListener)
+        binding.btnCancelFinish.setOnClickListener(this)
+        binding.btnConfirmFinish.setOnClickListener(confirmListener)
     }
 
     override fun onClick(v: View?) {
@@ -37,6 +45,6 @@ class ConfirmDialog(context: Context, private val confirmListener: View.OnClickL
     }
 
     fun setText(message: String) {
-        tv_dialog.text = message
+        binding.tvDialog.text = message
     }
 }
