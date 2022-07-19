@@ -1,9 +1,7 @@
 package com.gmail.sleepybee410.picshelf.activity
 
 import android.Manifest
-import android.app.Activity
 import android.appwidget.AppWidgetManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -11,6 +9,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.gmail.sleepybee410.picshelf.WidgetProvider
 import com.gmail.sleepybee410.picshelf.R
@@ -25,7 +26,7 @@ import java.time.format.DateTimeFormatter
 /**
  * The configuration screen for the [WidgetProvider] AppWidget.
  */
-class AddActivity : Activity() {
+class AddActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityAddBinding
     var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
@@ -51,6 +52,8 @@ class AddActivity : Activity() {
         setActionBar(binding.toolbarAdd)
 
         setResult(RESULT_CANCELED)
+        val permissionGrantedResultLauncher: ActivityResultLauncher<Intent> =
+            getPermissionGrantedResultLauncher()
 
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
@@ -58,10 +61,8 @@ class AddActivity : Activity() {
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)
                 intent.type = "image/jpg"
-                startActivityForResult(
-                    Intent.createChooser(intent, "SELECT PIC"),
-                    REQUEST_SELECT
-                )
+
+                permissionGrantedResultLauncher.launch(Intent.createChooser(intent, "SELECT PIC"))
             }
 
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
@@ -94,72 +95,124 @@ class AddActivity : Activity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    private fun getPermissionGrantedResultLauncher(): ActivityResultLauncher<Intent> {
+        return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val intent = it.data
+                if (intent != null) {
+                    return@registerForActivityResult
+                }
 
+                val data = intent?.data
+                Toast.makeText(this, "SEL IMG : " + data, Toast.LENGTH_SHORT).show()
+                if (data != null) {
+                    originUri = data
+                    val current = LocalDateTime.now()
+                    val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+                    val formatted = current.format(formatter)
+                    var srcName = "$formatted.jpg"
+                    var destUri = File(
+                        Environment.getExternalStorageDirectory(),
+                        Environment.DIRECTORY_PICTURES + File.separator + "PicShelf"
+                    )
+                    if (!destUri.exists()) {
+                        destUri.mkdirs()
+                    }
+
+                    var option = UCrop.Options()
+                    option.setCompressionFormat(Bitmap.CompressFormat.JPEG)
+                    option.useSourceImageAspectRatio()
+                    option.setToolbarTitle(getString(R.string.edit_picture))
+                    option.setToolbarColor(getColor(R.color.colorPrimary))
+                    option.setStatusBarColor(getColor(R.color.colorPrimary))
+                    option.setActiveWidgetColor(getColor(R.color.colorAccent))
+
+                    val cropResultLauncher = getCropResultLauncher()
+
+                    val intent = UCrop.of(data, Uri.fromFile(File(destUri, srcName)))
+                        .withOptions(option)
+                        .getIntent(this@AddActivity)
+
+                    cropResultLauncher.launch(intent)
+
+                } else {
+                    finish()
+                }
+            }
+        }
+    }
+
+    private fun getCropResultLauncher(): ActivityResultLauncher<Intent> {
+        return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val intent = it.data
+                if (intent != null) {
+                    return@registerForActivityResult
+                }
+
+                // Find the widget id from the intent.
+                val intentGiven = intent
+                val extras = intentGiven?.extras
+
+                if (extras != null) {
+                    appWidgetId = extras.getInt(
+                        AppWidgetManager.EXTRA_APPWIDGET_ID,
+                        AppWidgetManager.INVALID_APPWIDGET_ID
+                    )
+
+                    Log.d("SB", "appwidgetid : " + appWidgetId);
+                }
+
+                // If this activity was started with an intent without an app widget ID, finish with an error.
+                if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+                    finish()
+                }
+
+                val editResultLauncher = getEditResultLauncher()
+
+                val intentWillSended = Intent(this, EditActivity::class.java)
+                intentWillSended.putExtra("idx", idx)
+                intentWillSended.putExtra("widgetId", appWidgetId)
+                intentWillSended.putExtra("originUri", originUri)
+                intentWillSended.putExtra("uri", UCrop.getOutput(intent!!))
+                intentWillSended.putExtra("label", label)
+                intentWillSended.putExtra("color", color)
+                intentWillSended.putExtra("frame", "no")
+                startActivityForResult(intentWillSended, 200)
+                Log.i("SB", "CROP DATA : " + UCrop.getOutput(intent!!))
+
+                editResultLauncher.launch(intentWillSended)
+            }
+        }
+    }
+
+    private fun getEditResultLauncher(): ActivityResultLauncher<Intent> {
+        return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            ////                var item : ListItem = data!!.getParcelableExtra("item")
+////                Toast.makeText(this, "OKAY : ${item.toString()}", Toast.LENGTH_SHORT).show()
+//                initList()
+
+            // It is the responsibility of the configuration activity to update the app widget
+            val appWidgetManager = AppWidgetManager.getInstance(this@AddActivity)
+            WidgetProvider.updateAppWidget(this@AddActivity, appWidgetManager, appWidgetId)
+
+            //            PicShelfAppWidget.Companion.updateAppWidget$app(context, appWidgetManager, mAppWidgetId);
+
+            val resultValue = Intent()
+            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            setResult(RESULT_OK, resultValue)
+            finish()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
             RESULT_OK -> {
                 when (requestCode) {
-                    REQUEST_SELECT -> {
-                        Toast.makeText(this, "SEL IMG : " + data!!.data, Toast.LENGTH_SHORT).show()
-                        if (data!!.data != null) {
-                            originUri = data.data
-                            val current = LocalDateTime.now()
-                            val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
-                            val formatted = current.format(formatter)
-                            var srcName = "$formatted.jpg"
-                            var destUri = File(
-                                Environment.getExternalStorageDirectory(),
-                                Environment.DIRECTORY_PICTURES + File.separator + "PicShelf"
-                            )
-                            if (!destUri.exists()) {
-                                destUri.mkdirs()
-                            }
-
-                            var option = UCrop.Options()
-                            option.setCompressionFormat(Bitmap.CompressFormat.JPEG)
-                            option.useSourceImageAspectRatio()
-                            option.setToolbarTitle(getString(R.string.edit_picture))
-                            option.setToolbarColor(getColor(R.color.colorPrimary))
-                            option.setStatusBarColor(getColor(R.color.colorPrimary))
-                            option.setActiveWidgetColor(getColor(R.color.colorAccent))
-
-                            UCrop.of(data.data!!, Uri.fromFile(File(destUri, srcName)))
-                                .withOptions(option)
-                                .start(this)
-                        } else {
-                            finish()
-                        }
-                    }
                     UCrop.REQUEST_CROP -> {
-                        // Find the widget id from the intent.
-                        val intentGiven = intent
-                        val extras = intentGiven.extras
 
-                        if (extras != null) {
-                            appWidgetId = extras.getInt(
-                                AppWidgetManager.EXTRA_APPWIDGET_ID,
-                                AppWidgetManager.INVALID_APPWIDGET_ID
-                            )
-
-                            Log.d("SB", "appwidgetid : " + appWidgetId);
-                        }
-
-                        // If this activity was started with an intent without an app widget ID, finish with an error.
-                        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-                            finish()
-                            return
-                        }
-
-                        val intentWillSended = Intent(this, EditActivity::class.java)
-                        intentWillSended.putExtra("idx", idx)
-                        intentWillSended.putExtra("widgetId", appWidgetId)
-                        intentWillSended.putExtra("originUri", originUri)
-                        intentWillSended.putExtra("uri", UCrop.getOutput(data!!))
-                        intentWillSended.putExtra("label", label)
-                        intentWillSended.putExtra("color", color)
-                        intentWillSended.putExtra("frame", "no")
-                        startActivityForResult(intentWillSended, 200)
-                        Log.i("SB", "CROP DATA : " + UCrop.getOutput(data!!))
                     }
                 }
             }
@@ -169,24 +222,6 @@ class AddActivity : Activity() {
                     .show()
                 Log.i("SB", "CROP ERR : " + UCrop.getError(data!!))
 
-            }
-
-            RESULT_EDIT -> {
-////                var item : ListItem = data!!.getParcelableExtra("item")
-////                Toast.makeText(this, "OKAY : ${item.toString()}", Toast.LENGTH_SHORT).show()
-//                initList()
-
-                // It is the responsibility of the configuration activity to update the app widget
-                val appWidgetManager = AppWidgetManager.getInstance(this@AddActivity)
-                WidgetProvider.updateAppWidget(this@AddActivity, appWidgetManager, appWidgetId)
-
-                //            PicShelfAppWidget.Companion.updateAppWidget$app(context, appWidgetManager, mAppWidgetId);
-
-                val resultValue = Intent()
-                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                setResult(RESULT_OK, resultValue)
-                finish()
             }
         }
     }

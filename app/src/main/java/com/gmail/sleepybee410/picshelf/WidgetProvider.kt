@@ -11,7 +11,15 @@ import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.gmail.sleepybee410.picshelf.activity.EditActivity
+import com.gmail.sleepybee410.picshelf.database.PicDatabase
+import com.gmail.sleepybee410.picshelf.database.PicRepository
+import com.gmail.sleepybee410.picshelf.viewmodel.PicViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.lang.String
 import java.net.URI
@@ -103,58 +111,65 @@ class WidgetProvider : AppWidgetProvider() {
 //            var intent = Intent(context, ListViewWidgetService::class.java)
 //            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
 //            intent.data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
-            // Instruct the widget manager to update the widget
 
-//            val dbIdx = extras.getInt("dbIdx")
-            val loadedItem = GlobalUtils.loadByWidgetId(context, appWidgetId) ?: return
-            val file = File(URI(loadedItem.uri.toString()))
-            val uri = FileProvider.getUriForFile(
-                context,
-                "com.gmail.sleepybee410.picshelf.fileProvider",
-                file
-            )
+            CoroutineScope(Dispatchers.Main.immediate).launch {
 
-            context.grantUriPermission(
-                "com.sec.android.app.launcher",
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            );
-            views.setImageViewUri(R.id.iv_widget, uri)
-            when (loadedItem.frame) {
-                "polaroid" -> {
-                    views.setViewPadding(R.id.fl_frame_widget, 16, 16, 16, 80)
-                    views.setTextViewText(R.id.tv_label_widget, loadedItem.label)
-                    views.setViewVisibility(R.id.tv_label_widget, View.VISIBLE)
-                }
-                "default" -> {
-                    views.setViewPadding(R.id.fl_frame_widget, 16, 16, 16, 16)
-                    views.setViewVisibility(R.id.tv_label_widget, View.GONE)
-                }
-                else -> {
-                    views.setViewPadding(R.id.fl_frame_widget, 0, 0, 0, 0)
-                    views.setViewVisibility(R.id.tv_label_widget, View.GONE)
-                }
-            }
+                val picDao = PicDatabase.getInstance(context.applicationContext).picDao()
+                picDao.loadByWidgetId(appWidgetId).observe(context.applicationContext, {
 
-            val startActivityIntent = Intent(context, WidgetProvider::class.java)
-            startActivityIntent.action = ACTION_CLICK
-            startActivityIntent.putExtra("widgetId", appWidgetId)
+                })
 
-            val data = Uri.withAppendedPath(
-                Uri.parse("picShelf://widget/id/"), String.valueOf(appWidgetId)
-            )
-            startActivityIntent.data = data
-            val startActivityPendingIntent =
-                PendingIntent.getBroadcast(
+                val file = File(URI(loadedItem.uri.toString()))
+                val uri = FileProvider.getUriForFile(
                     context,
-                    0,
-                    startActivityIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    "com.gmail.sleepybee410.picshelf.fileProvider",
+                    file
                 )
 
-            views.setOnClickPendingIntent(R.id.fl_frame_widget, startActivityPendingIntent)
+                context.grantUriPermission(
+                    "com.sec.android.app.launcher",
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                );
+                views.setImageViewUri(R.id.iv_widget, uri)
+                when (loadedItem.frame) {
+                    "polaroid" -> {
+                        views.setViewPadding(R.id.fl_frame_widget, 16, 16, 16, 80)
+                        views.setTextViewText(R.id.tv_label_widget, loadedItem.label)
+                        views.setViewVisibility(R.id.tv_label_widget, View.VISIBLE)
+                    }
+                    "default" -> {
+                        views.setViewPadding(R.id.fl_frame_widget, 16, 16, 16, 16)
+                        views.setViewVisibility(R.id.tv_label_widget, View.GONE)
+                    }
+                    else -> {
+                        views.setViewPadding(R.id.fl_frame_widget, 0, 0, 0, 0)
+                        views.setViewVisibility(R.id.tv_label_widget, View.GONE)
+                    }
+                }
 
-            appWidgetManager.updateAppWidget(appWidgetId, views)
+                val startActivityIntent = Intent(context, WidgetProvider::class.java)
+                startActivityIntent.action = ACTION_CLICK
+                startActivityIntent.putExtra("widgetId", appWidgetId)
+
+                val data = Uri.withAppendedPath(
+                    Uri.parse("picShelf://widget/id/"), String.valueOf(appWidgetId)
+                )
+                startActivityIntent.data = data
+                val startActivityPendingIntent =
+                    PendingIntent.getBroadcast(
+                        context,
+                        0,
+                        startActivityIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+
+                views.setOnClickPendingIntent(R.id.fl_frame_widget, startActivityPendingIntent)
+
+                appWidgetManager.updateAppWidget(appWidgetId, views)
+            }
+
+
         }
     }
 

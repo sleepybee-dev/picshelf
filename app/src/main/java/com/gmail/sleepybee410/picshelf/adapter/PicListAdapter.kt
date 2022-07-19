@@ -1,13 +1,10 @@
 package com.gmail.sleepybee410.picshelf.adapter
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,11 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gmail.sleepybee410.picshelf.activity.EditActivity
 import com.gmail.sleepybee410.picshelf.activity.MainActivity
-import com.gmail.sleepybee410.picshelf.GlobalUtils
 import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
 
-class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAdapter.ViewHolder>(), View.OnClickListener {
+class PicListAdapter (picList : List<PicItem>) : RecyclerView.Adapter<PicListAdapter.ViewHolder>(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         var position = v!!.tag
@@ -27,7 +23,7 @@ class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAd
 
     }
 
-    private var list = pic
+    private var list = picList
     private lateinit var context : Context
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
@@ -72,6 +68,10 @@ class PicListAdapter (pic : ArrayList<PicItem>) : RecyclerView.Adapter<PicListAd
 //            true
 //        }
 
+    }
+
+    fun setPicList(picList: List<PicItem>) {
+        this.list = picList
     }
 
     private fun edit(item: PicItem) {

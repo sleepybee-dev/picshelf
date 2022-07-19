@@ -3,15 +3,28 @@ package com.gmail.sleepybee410.picshelf
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "PIC")
 data class PicItem(
+    @PrimaryKey(autoGenerate = true)
     var idx : Int,
+
+    @ColumnInfo(name = "createDate")
     var createDate : String?,
+    @ColumnInfo(name = "widgetId")
     var widgetId : Int,
+    @ColumnInfo(name = "originUri")
     var originUri: Uri?,
+    @ColumnInfo(name = "uri")
     var uri: Uri?,
+    @ColumnInfo(name = "label")
     var label: String?,
+    @ColumnInfo(name = "color")
     var color: String?,
+    @ColumnInfo(name = "frame")
     var frame: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(

@@ -11,15 +11,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.sleepybee410.picshelf.ConfirmDialog
 import com.gmail.sleepybee410.picshelf.adapter.PicListAdapter
-import com.gmail.sleepybee410.picshelf.PicItem
 import com.gmail.sleepybee410.picshelf.R
-import com.gmail.sleepybee410.picshelf.SQLiteHelper
 import com.gmail.sleepybee410.picshelf.databinding.ActivityMainBinding
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
+import com.gmail.sleepybee410.picshelf.viewmodel.PicViewModel
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.time.LocalDateTime
@@ -29,6 +28,8 @@ import java.time.format.DateTimeFormatter
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
+    private lateinit var picViewModel: PicViewModel
+    private lateinit var picAdapter: PicListAdapter
 
     companion object {
         const val REQUEST_SELECT = 100
@@ -38,13 +39,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setSupportActionBar(binding.toolbarMain)
 
+        binding.lifecycleOwner = this
 
-        MobileAds.initialize(this) {}
+        picViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application).create(PicViewModel::class.java)
 
-        val adRequest = AdRequest.Builder().build()
+
+//        MobileAds.initialize(this) {}
+
+//        val adRequest = AdRequest.Builder().build()
 //        binding.includeMain.avMain.loadAd(adRequest)
     }
 
@@ -54,53 +59,55 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initList() {
+
+        picViewModel.getPicList().observe(this, Observer {
+            picAdapter = PicListAdapter(it)
+            binding.includeMain.rvMain.visibility = if(it.isEmpty()) View.GONE else View.VISIBLE
+            binding.includeMain.tvNoHistoryMain.visibility = if(it.isEmpty()) View.VISIBLE else View.GONE
+        })
         //preference에서 가져오기
-        var list = loadData()
-        var adapterPic : PicListAdapter = PicListAdapter(list)
+//        val list = loadData()
 
-        var mLayoutManager = LinearLayoutManager(this)
+        val mLayoutManager = LinearLayoutManager(this)
         binding.includeMain.rvMain.layoutManager = mLayoutManager
-        binding.includeMain.rvMain.adapter = adapterPic
-
-        binding.includeMain.rvMain.visibility = if(list.isEmpty()) View.GONE else View.VISIBLE
-        binding.includeMain.tvNoHistoryMain.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
+        binding.includeMain.rvMain.adapter = picAdapter
     }
-
-    private fun loadData(): ArrayList<PicItem> {
-
-        val helper = SQLiteHelper(this)
-        val db = helper.writableDatabase
-
-//        var db = this.openOrCreateDatabase("picshelf", Context.MODE_PRIVATE, null)
-//        db.execSQL("CREATE TABLE IF NOT EXISTS PICS_TB;")
-
-        var cursor = db.rawQuery("SELECT * FROM PICS_TB", null)
-        var items : ArrayList<PicItem> = ArrayList()
-
-        if(cursor!=null){
-            if(cursor.moveToFirst()){
-                do{
-                    var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
-                    var createDate = cursor.getString(cursor.getColumnIndex("createDate"))
-                    var widgetId : Int = cursor.getInt(cursor.getColumnIndex("widgetId"))
-                    var label = cursor.getString(cursor.getColumnIndex("label"))
-                    var color = cursor.getString(cursor.getColumnIndex("color"))
-                    var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
-                    var uri = cursor.getString(cursor.getColumnIndex("uri"))
-                    var frame = cursor.getString(cursor.getColumnIndex("frame"))
-
-                    var item = PicItem(idx, createDate, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color, frame)
-                    items.add(item)
-
-                } while (cursor.moveToNext())
-            }
-        }
-
-        db.close()
-
-        return items
-
-    }
+//
+//    private fun loadData(): ArrayList<PicItem> {
+//
+//        val helper = SQLiteHelper(this)
+//        val db = helper.writableDatabase
+//
+////        var db = this.openOrCreateDatabase("picshelf", Context.MODE_PRIVATE, null)
+////        db.execSQL("CREATE TABLE IF NOT EXISTS PICS_TB;")
+//
+//        var cursor = db.rawQuery("SELECT * FROM PICS_TB", null)
+//        var items : ArrayList<PicItem> = ArrayList()
+//
+//        if(cursor!=null){
+//            if(cursor.moveToFirst()){
+//                do{
+//                    var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
+//                    var createDate = cursor.getString(cursor.getColumnIndex("createDate"))
+//                    var widgetId : Int = cursor.getInt(cursor.getColumnIndex("widgetId"))
+//                    var label = cursor.getString(cursor.getColumnIndex("label"))
+//                    var color = cursor.getString(cursor.getColumnIndex("color"))
+//                    var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
+//                    var uri = cursor.getString(cursor.getColumnIndex("uri"))
+//                    var frame = cursor.getString(cursor.getColumnIndex("frame"))
+//
+//                    var item = PicItem(idx, createDate, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color, frame)
+//                    items.add(item)
+//
+//                } while (cursor.moveToNext())
+//            }
+//        }
+//
+//        db.close()
+//
+//        return items
+//
+//    }
 
     private var originUri : Uri? = null
     private var label : String = ""
