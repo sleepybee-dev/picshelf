@@ -65,49 +65,11 @@ class MainActivity : AppCompatActivity() {
             binding.includeMain.rvMain.visibility = if(it.isEmpty()) View.GONE else View.VISIBLE
             binding.includeMain.tvNoHistoryMain.visibility = if(it.isEmpty()) View.VISIBLE else View.GONE
         })
-        //preference에서 가져오기
-//        val list = loadData()
 
         val mLayoutManager = LinearLayoutManager(this)
         binding.includeMain.rvMain.layoutManager = mLayoutManager
         binding.includeMain.rvMain.adapter = picAdapter
     }
-//
-//    private fun loadData(): ArrayList<PicItem> {
-//
-//        val helper = SQLiteHelper(this)
-//        val db = helper.writableDatabase
-//
-////        var db = this.openOrCreateDatabase("picshelf", Context.MODE_PRIVATE, null)
-////        db.execSQL("CREATE TABLE IF NOT EXISTS PICS_TB;")
-//
-//        var cursor = db.rawQuery("SELECT * FROM PICS_TB", null)
-//        var items : ArrayList<PicItem> = ArrayList()
-//
-//        if(cursor!=null){
-//            if(cursor.moveToFirst()){
-//                do{
-//                    var idx : Int = cursor.getInt(cursor.getColumnIndex("idx"))
-//                    var createDate = cursor.getString(cursor.getColumnIndex("createDate"))
-//                    var widgetId : Int = cursor.getInt(cursor.getColumnIndex("widgetId"))
-//                    var label = cursor.getString(cursor.getColumnIndex("label"))
-//                    var color = cursor.getString(cursor.getColumnIndex("color"))
-//                    var originUri = cursor.getString(cursor.getColumnIndex("originUri"))
-//                    var uri = cursor.getString(cursor.getColumnIndex("uri"))
-//                    var frame = cursor.getString(cursor.getColumnIndex("frame"))
-//
-//                    var item = PicItem(idx, createDate, widgetId, Uri.parse(originUri), Uri.parse(uri), label, color, frame)
-//                    items.add(item)
-//
-//                } while (cursor.moveToNext())
-//            }
-//        }
-//
-//        db.close()
-//
-//        return items
-//
-//    }
 
     private var originUri : Uri? = null
     private var label : String = ""
@@ -173,41 +135,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        return when (item.itemId) {
-//            R.id.action_settings -> true
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-
-//    override fun onBackPressed() {
-////        val manager = ReviewManagerFactory.create(this)
-//        val manager = FakeReviewManager(this)
-//
-//        val request = manager.requestReviewFlow()
-//        request.addOnCompleteListener { request ->
-//            if (request.isSuccessful) {
-//                // We got the ReviewInfo object
-//                val reviewInfo = request.result
-//                val flow = manager.launchReviewFlow(this, reviewInfo)
-//                flow.addOnCompleteListener { _ ->
-//                }
-//            } else {
-//                // There was some problem, continue regardless of the result.
-//            }
-//        }
-//    }
-
 
     override fun onBackPressed() {
         val finishDialog = ConfirmDialog(this,

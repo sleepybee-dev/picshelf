@@ -74,24 +74,9 @@ class AddActivity : AppCompatActivity() {
             .setPermissionListener(permissionListener)
             .setRationaleMessage(getString(R.string.msg_permission))
             .setDeniedMessage(getString(R.string.msg_permission_denied))
-//                .setPermissions(Manifest.permission_group.STORAGE)
             .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
-
-//        val gridItems : ArrayList<PicItem> = GlobalUtils.loadAll(this)
-//        gv_history_configure.numColumns = 3
-//        gv_history_configure.adapter = HistoryGridAdapter(this, gridItems)
-
-//        btn_load_configure.setOnClickListener {
-//            var intent = Intent(Intent.ACTION_GET_CONTENT)
-//            intent.addCategory(Intent.CATEGORY_OPENABLE)
-//            intent.type = "image/jpg"
-//            startActivityForResult(
-//                Intent.createChooser(intent, "SELECT PIC"),
-//                REQUEST_SELECT
-//            )
-//        }
 
     }
 
@@ -188,15 +173,9 @@ class AddActivity : AppCompatActivity() {
 
     private fun getEditResultLauncher(): ActivityResultLauncher<Intent> {
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            ////                var item : ListItem = data!!.getParcelableExtra("item")
-////                Toast.makeText(this, "OKAY : ${item.toString()}", Toast.LENGTH_SHORT).show()
-//                initList()
 
-            // It is the responsibility of the configuration activity to update the app widget
             val appWidgetManager = AppWidgetManager.getInstance(this@AddActivity)
             WidgetProvider.updateAppWidget(this@AddActivity, appWidgetManager, appWidgetId)
-
-            //            PicShelfAppWidget.Companion.updateAppWidget$app(context, appWidgetManager, mAppWidgetId);
 
             val resultValue = Intent()
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)

@@ -19,7 +19,8 @@
                 android:name="com.gmail.sleepybee410.picshelf.activity.MainActivity"
                 android:screenOrientation="portrait"
                 android:label="@string/app_name"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
@@ -36,7 +37,8 @@
                 android:screenOrientation="portrait"
                 android:label="@string/edit_frame"/>
 
-        <receiver android:name="com.gmail.sleepybee410.picshelf.WidgetProvider">
+        <receiver android:name="com.gmail.sleepybee410.picshelf.WidgetProvider"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="com.gmail.sleepybee410.picshelf.PicShelfAppWidgetProvider.ACTION_CLICK" />
@@ -49,7 +51,8 @@
 
         <activity android:name="com.gmail.sleepybee410.picshelf.activity.AddActivity"
                 android:label="@string/add_widget"
-                android:screenOrientation="portrait">
+                android:screenOrientation="portrait"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
